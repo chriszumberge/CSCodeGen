@@ -41,6 +41,9 @@
     <Reference Include="ZESoft.Common">
       <HintPath>..\..\ZESoft.Common\ZESoft.Common\ZESoft.Common\bin\Release\ZESoft.Common.dll</HintPath>
     </Reference>
+    <Reference Include="ZESoft.Common">
+      <HintPath>..\..\ZESoft.Common\ZESoft.Common\ZESoft.Common\bin\Release\ZESoft.Common.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccessibilityLevel.cs" />
@@ -53,6 +56,10 @@
     <Compile Include="CGNamespace.cs" />
     <Compile Include="CGUsingStatement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CGClassConstructor.cs" />
+    <Compile Include="CGMethod.cs" />
+    <Compile Include="CGEnum.cs" />
+    <Compile Include="CGStruct.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

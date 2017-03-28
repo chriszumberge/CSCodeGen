@@ -27,8 +27,18 @@ namespace CSCodeGen.Demo
                 ifc_methodB
             });
 
+            CGClass cls = new CGClass(AccessibilityLevel.Internal, "TestClass", false, false);
+            cls.AddInterfaceImplementation(ifc.InterfaceName);
+            CGMethod cls_methodA = new CGMethod(ifc_methodA.AccessibilityLevel, ifc_methodA.MethodName, ifc_methodA.ReturnType, ifc_methodA.IsStatic, ifc_methodA.Arguments);
+            cls_methodA.AppendLineToMethodText("return String.Empty;");
+            cls.AddClassMethod(cls_methodA);
+
+            cls.AddClassProperty(new CGClassProperty(AccessibilityLevel.Public, typeof(int), "SomeCount"));
+
+
             CGNamespace testNamespace = new CGNamespace("Test.Interfaces");
             testNamespace.AddInterface(ifc);
+            testNamespace.AddClass(cls);
 
             CGFile file = new CGFile("TestFile");
             file.AddUsingStatment(new CGUsingStatement("System"));

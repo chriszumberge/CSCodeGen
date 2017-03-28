@@ -51,8 +51,22 @@ namespace CSCodeGen
             mCustomPropertyType = propertyType;
             mPropertyName = propertyName;
             mIsStatic = isStatic;
-            mGetterAccessibilityLevel = getterAccessibilityLevel;
-            mSetterAccessibilityLevel = setterAccessibilityLevel;
+            if (getterAccessibilityLevel == null)
+            {
+                mGetterAccessibilityLevel = AccessibilityLevel.Public;
+            }
+            else
+            {
+                mGetterAccessibilityLevel = getterAccessibilityLevel;
+            }
+            if (setterAccessibilityLevel == null)
+            {
+                mSetterAccessibilityLevel = AccessibilityLevel.Public;
+            }
+            else
+            {
+                mSetterAccessibilityLevel = setterAccessibilityLevel;
+            }
         }
 
         public CGClassProperty(AccessibilityLevel accessibilityLevel, Type propertyType, string propertyName, bool isStatic = false,
@@ -62,8 +76,22 @@ namespace CSCodeGen
             mPropertyType = propertyType;
             mPropertyName = propertyName;
             mIsStatic = isStatic;
-            mGetterAccessibilityLevel = getterAccessibilityLevel;
-            mSetterAccessibilityLevel = setterAccessibilityLevel;
+            if (getterAccessibilityLevel == null)
+            {
+                mGetterAccessibilityLevel = AccessibilityLevel.Public;
+            }
+            else
+            {
+                mGetterAccessibilityLevel = getterAccessibilityLevel;
+            }
+            if (setterAccessibilityLevel == null)
+            {
+                mSetterAccessibilityLevel = AccessibilityLevel.Public;
+            }
+            else
+            {
+                mSetterAccessibilityLevel = setterAccessibilityLevel;
+            }
         }
 
         public void AppendGetterText(string text)

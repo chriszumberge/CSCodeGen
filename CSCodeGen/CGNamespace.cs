@@ -17,6 +17,13 @@ namespace CSCodeGen
         List<CGClass> mClasses { get; set; } = new List<CGClass>();
         public IReadOnlyList<CGClass> Classes => mClasses.AsReadOnly();
 
+        List<CGEnum> mEnums { get; set; } = new List<CGEnum>();
+        public List<CGEnum> Enums => mEnums;
+
+        List<CGStruct> mStructs { get; set; } = new List<CGStruct>();
+        public List<CGStruct> Structs => mStructs;
+
+
         public CGNamespace(string namespaceName, IEnumerable<CGInterface> interfaces = null)
         {
             if (namespaceName == null)
@@ -52,6 +59,30 @@ namespace CSCodeGen
             }
         }
 
+        public void AddClass(CGClass @class)
+        {
+            if (@class != null)
+            {
+                mClasses.Add(@class);
+            }
+        }
+
+        public void AddEnum(CGEnum @enum)
+        {
+            if (@enum != null)
+            {
+                mEnums.Add(@enum);
+            }
+        }
+
+        public void AddStruct(CGStruct @struct)
+        {
+            if (@struct != null)
+            {
+                mStructs.Add(@struct);
+            }
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -63,6 +94,30 @@ namespace CSCodeGen
                 foreach (string interfaceLine in interfaceLines)
                 {
                     sb.AppendLine($"\t{interfaceLine}");
+                }
+            }
+            foreach (var @class in Classes)
+            {
+                string[] classLines = @class.ToString().Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                foreach (string classLine in classLines)
+                {
+                    sb.AppendLine($"\t{classLine}");
+                }
+            }
+            foreach (var @enum in Enums)
+            {
+                string[] enumLines = @enum.ToString().Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                foreach (string enumLine in enumLines)
+                {
+                    sb.AppendLine($"\t{enumLine}");
+                }
+            }
+            foreach (var @struct in Structs)
+            {
+                string[] structLines = @struct.ToString().Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                foreach (string structLine in structLines)
+                {
+                    sb.AppendLine($"\t{structLine}");
                 }
             }
             sb.AppendLine("}");

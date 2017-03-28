@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{49230E6D-B19F-4C0E-A746-1674A1515435}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{BFEB1FC1-262A-44FC-BD81-E66990C5E539}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CSCodeGen</RootNamespace>
-    <AssemblyName>CSCodeGen</AssemblyName>
+    <RootNamespace>CSCodeGen.Demo</RootNamespace>
+    <AssemblyName>CSCodeGen.Demo</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -43,16 +46,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccessibilityLevel.cs" />
-    <Compile Include="CGClass.cs" />
-    <Compile Include="CGClassProperty.cs" />
-    <Compile Include="CGFile.cs" />
-    <Compile Include="CGInterface.cs" />
-    <Compile Include="CGMethodArgument.cs" />
-    <Compile Include="CGMethodSignature.cs" />
-    <Compile Include="CGNamespace.cs" />
-    <Compile Include="CGUsingStatement.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CSCodeGen\CSCodeGen.csproj">
+      <Project>{49230e6d-b19f-4c0e-a746-1674a1515435}</Project>
+      <Name>CSCodeGen</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

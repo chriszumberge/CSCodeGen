@@ -11,13 +11,76 @@ namespace CSCodeGen
         readonly string mFileName;
         public string FileName => mFileName;
 
-        List<CGUsingStatement> mUsingStatements { get; set; } = new List<CGUsingStatement>();
-        public IReadOnlyList<CGUsingStatement> UsingStatments => mUsingStatements.AsReadOnly();
+        readonly string mFileExtension;
+        public string FileExtension => mFileExtension;
 
-        List<CGNamespace> mNamespaces { get; set; } = new List<CGNamespace>();
-        public IReadOnlyList<CGNamespace> Namespaces => mNamespaces;
+        //List<CGUsingStatement> mUsingStatements { get; set; } = new List<CGUsingStatement>();
+        //public IReadOnlyList<CGUsingStatement> UsingStatments => mUsingStatements.AsReadOnly();
+        public List<CGUsingStatement> UsingStatements { get; set; } = new List<CGUsingStatement>();
 
-        public CGFile(string fileName, IEnumerable<CGUsingStatement> usingStatements = null, IEnumerable<CGNamespace> namespaces = null)
+        //List<CGNamespace> mNamespaces { get; set; } = new List<CGNamespace>();
+        //public IReadOnlyList<CGNamespace> Namespaces => mNamespaces;
+        public List<CGNamespace> Namespaces { get; set; } = new List<CGNamespace>();
+
+        public CGFile(string fileNameWithExtension)
+        {
+            int idx = fileNameWithExtension.LastIndexOf(".");
+            string fileName = fileNameWithExtension.Substring(0, idx);
+            string fileExtension = fileNameWithExtension.Substring(idx + 1, fileNameWithExtension.Length - idx - 1);
+
+            if (fileName == null)
+            {
+                throw new ArgumentNullException(nameof(fileName));
+            }
+            if (fileName.Length == 0)
+            {
+                throw new ArgumentException("Argument cannot be an empty string.", nameof(fileName));
+            }
+
+            if (fileExtension == null)
+            {
+                throw new ArgumentNullException(nameof(fileExtension));
+            }
+            if (fileExtension.Length == 0)
+            {
+                throw new ArgumentException("Argument cannot be an empty string.", nameof(fileExtension));
+            }
+
+            mFileName = fileName;
+            mFileExtension = fileExtension;
+        }
+
+        public CGFile(string fileNameWithExtension, params string[] usingAssemblies)
+        {
+            int idx = fileNameWithExtension.LastIndexOf(".");
+            string fileName = fileNameWithExtension.Substring(0, idx);
+            string fileExtension = fileNameWithExtension.Substring(idx + 1, fileNameWithExtension.Length - idx);
+
+            if (fileName == null)
+            {
+                throw new ArgumentNullException(nameof(fileName));
+            }
+            if (fileName.Length == 0)
+            {
+                throw new ArgumentException("Argument cannot be an empty string.", nameof(fileName));
+            }
+
+            if (fileExtension == null)
+            {
+                throw new ArgumentNullException(nameof(fileExtension));
+            }
+            if (fileExtension.Length == 0)
+            {
+                throw new ArgumentException("Argument cannot be an empty string.", nameof(fileExtension));
+            }
+
+            mFileName = fileName;
+            mFileExtension = fileExtension;
+
+            UsingStatements = usingAssemblies.Select(x => new CGUsingStatement(x)).OrderBy(x => x.AssemblyName).ToList();
+        }
+
+        public CGFile(string fileName, string fileExtension)
         {
             if (fileName == null)
             {
@@ -28,17 +91,79 @@ namespace CSCodeGen
                 throw new ArgumentException("Argument cannot be an empty string.", nameof(fileName));
             }
 
+            if (fileExtension == null)
+            {
+                throw new ArgumentNullException(nameof(fileExtension));
+            }
+            if (fileExtension.Length == 0)
+            {
+                throw new ArgumentException("Argument cannot be an empty string.", nameof(fileExtension));
+            }
+
             mFileName = fileName;
+            mFileExtension = fileExtension;
+        }
+        public CGFile(string fileName, string fileExtension, params string[] usingAssemblies)
+        {
+            if (fileName == null)
+            {
+                throw new ArgumentNullException(nameof(fileName));
+            }
+            if (fileName.Length == 0)
+            {
+                throw new ArgumentException("Argument cannot be an empty string.", nameof(fileName));
+            }
+
+            if (fileExtension == null)
+            {
+                throw new ArgumentNullException(nameof(fileExtension));
+            }
+            if (fileExtension.Length == 0)
+            {
+                throw new ArgumentException("Argument cannot be an empty string.", nameof(fileExtension));
+            }
+
+            mFileName = fileName;
+            mFileExtension = fileExtension;
+
+            UsingStatements = usingAssemblies.Select(x => new CGUsingStatement(x)).OrderBy(x => x.AssemblyName).ToList();
+        }
+
+        public CGFile(string fileName, string fileExtension, IEnumerable<CGUsingStatement> usingStatements = null, IEnumerable<CGNamespace> namespaces = null)
+        {
+            if (fileName == null)
+            {
+                throw new ArgumentNullException(nameof(fileName));
+            }
+            if (fileName.Length == 0)
+            {
+                throw new ArgumentException("Argument cannot be an empty string.", nameof(fileName));
+            }
+
+            if (fileExtension == null)
+            {
+                throw new ArgumentNullException(nameof(fileExtension));
+            }
+            if (fileExtension.Length == 0)
+            {
+                throw new ArgumentException("Argument cannot be an empty string.", nameof(fileExtension));
+            }
+
+            mFileName = fileName;
+            mFileExtension = fileExtension;
 
             if (usingStatements != null)
             {
-                mUsingStatements = usingStatements.ToList();
-                mUsingStatements = mUsingStatements.OrderBy(us => us.AssemblyName).ToList();
+                //mUsingStatements = usingStatements.ToList();
+                //mUsingStatements = mUsingStatements.OrderBy(us => us.AssemblyName).ToList();
+                UsingStatements = usingStatements.ToList();
+                UsingStatements = UsingStatements.OrderBy(us => us.AssemblyName).ToList();
             }
 
             if (namespaces != null)
             {
-                mNamespaces = namespaces.ToList();
+                //mNamespaces = namespaces.ToList();
+                Namespaces = namespaces.ToList();
             }
         }
 
@@ -46,8 +171,10 @@ namespace CSCodeGen
         {
             if (usingStatement != null)
             {
-                mUsingStatements.Add(usingStatement);
-                mUsingStatements = mUsingStatements.OrderBy(us => us.AssemblyName).ToList();
+                //mUsingStatements.Add(usingStatement);
+                //mUsingStatements = mUsingStatements.OrderBy(us => us.AssemblyName).ToList();
+                UsingStatements.Add(usingStatement);
+                UsingStatements = UsingStatements.OrderBy(us => us.AssemblyName).ToList();
             }
         }
 
@@ -55,7 +182,8 @@ namespace CSCodeGen
         {
             if (@namespace != null)
             {
-                mNamespaces.Add(@namespace);
+                //mNamespaces.Add(@namespace);
+                Namespaces.Add(@namespace);
             }
         }
 
@@ -63,12 +191,14 @@ namespace CSCodeGen
         {
             StringBuilder sb = new StringBuilder();
 
-            foreach (var usingStatment in mUsingStatements)
+            foreach (var usingStatment in UsingStatements)
             {
                 sb.AppendLine(usingStatment.ToString());
             }
 
-            foreach (var @namespace in mNamespaces)
+            sb.AppendLine();
+
+            foreach (var @namespace in Namespaces)
             {
                 sb.AppendLine(@namespace.ToString());
             }

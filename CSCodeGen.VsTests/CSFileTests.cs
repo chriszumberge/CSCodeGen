@@ -36,7 +36,7 @@ namespace CSCodeGen.VsTests
         {
             string fileName = "TestFile";
             CGFile file = new CGFile(fileName);
-            Assert.AreNotEqual(null, file.UsingStatments);
+            Assert.AreNotEqual(null, file.UsingStatements);
         }
 
         [TestMethod]
@@ -44,7 +44,7 @@ namespace CSCodeGen.VsTests
         {
             string fileName = "TestFile";
             CGFile file = new CGFile(fileName);
-            Assert.AreEqual(0, file.UsingStatments.Count);
+            Assert.AreEqual(0, file.UsingStatements.Count);
         }
 
         [TestMethod]
@@ -52,7 +52,7 @@ namespace CSCodeGen.VsTests
         {
             string fileName = "TestFile";
             CGFile file = new CGFile(fileName, null);
-            Assert.AreNotEqual(null, file.UsingStatments);
+            Assert.AreNotEqual(null, file.UsingStatements);
         }
 
         [TestMethod]
@@ -60,7 +60,7 @@ namespace CSCodeGen.VsTests
         {
             string fileName = "TestFile";
             CGFile file = new CGFile(fileName, null);
-            Assert.AreEqual(0, file.UsingStatments.Count);
+            Assert.AreEqual(0, file.UsingStatements.Count);
         }
 
         [TestMethod]
@@ -71,7 +71,7 @@ namespace CSCodeGen.VsTests
             CGUsingStatement usingStmt = new CGUsingStatement(assemblyName);
             var assemblies = new List<CGUsingStatement> { usingStmt };
             CGFile file = new CGFile(fileName, assemblies);
-            Assert.AreEqual(assemblies.Count, file.UsingStatments.Count);
+            Assert.AreEqual(assemblies.Count, file.UsingStatements.Count);
         }
 
         [TestMethod]
@@ -83,7 +83,7 @@ namespace CSCodeGen.VsTests
             var assemblies = new List<CGUsingStatement> { usingStmt };
             CGFile file = new CGFile(fileName, assemblies);
             Assert.AreEqual(String.Join(" ", assemblies.Select(x => x.AssemblyName)), 
-                String.Join(" ", file.UsingStatments.Select(x => x.AssemblyName)));
+                String.Join(" ", file.UsingStatements.Select(x => x.AssemblyName)));
         }
 
         [TestMethod]
@@ -107,7 +107,7 @@ namespace CSCodeGen.VsTests
         {
             string fileName = "TestFile";
             CGFile file = new CGFile(fileName, null, null);
-            Assert.AreNotEqual(null, file.UsingStatments);
+            Assert.AreNotEqual(null, file.UsingStatements);
         }
 
         [TestMethod]
@@ -115,7 +115,7 @@ namespace CSCodeGen.VsTests
         {
             string fileName = "TestFile";
             CGFile file = new CGFile(fileName, null, null);
-            Assert.AreEqual(0, file.UsingStatments.Count);
+            Assert.AreEqual(0, file.UsingStatements.Count);
         }
 
         [TestMethod]
@@ -145,8 +145,8 @@ namespace CSCodeGen.VsTests
         public void AddingUsingStatementToListProperty_ThrowsException()
         {
             CGFile file = new CGFile("TestFile");
-            file.UsingStatments.ToList().Add(new CGUsingStatement("TestAssembly"));
-            Assert.AreEqual(0, file.UsingStatments.Count);
+            file.UsingStatements.ToList().Add(new CGUsingStatement("TestAssembly"));
+            Assert.AreEqual(0, file.UsingStatements.Count);
         }
     }
 }

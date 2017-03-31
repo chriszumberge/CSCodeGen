@@ -20,34 +20,50 @@ namespace CSCodeGen
         string mClassName { get; set; }
         public string ClassName => mClassName;
 
-        List<string> mImplementations { get; set; } = new List<string>();
-        public List<string> Implementations => mImplementations;
+        //List<string> mImplementations { get; set; } = new List<string>();
+        //public List<string> Implementations => mImplementations;
+        public List<string> Implementations { get; set; } = new List<string>();
 
         string mBaseClassName { get; set; }
         public string BaseClassName => mBaseClassName;
 
-        List<CGClassProperty> mClassProperties { get; set; } = new List<CGClassProperty>();
-        public List<CGClassProperty> ClassProperties => mClassProperties;
+        //List<CGClassProperty> mClassProperties { get; set; } = new List<CGClassProperty>();
+        //public List<CGClassProperty> ClassProperties => mClassProperties;
+        public List<CGClassProperty> ClassProperties { get; set; } = new List<CGClassProperty>();
 
-        List<CGClassConstructor> mClassConstructors { get; set; } = new List<CGClassConstructor>();
-        public List<CGClassConstructor> ClassConstructors => mClassConstructors;
+        //List<CGClassConstructor> mClassConstructors { get; set; } = new List<CGClassConstructor>();
+        //public List<CGClassConstructor> ClassConstructors => mClassConstructors;
+        public List<CGClassConstructor> ClassConstructors { get; set; } = new List<CGClassConstructor>();
 
-        List<CGMethod> mClassMethods { get; set; } = new List<CGMethod>();
-        public List<CGMethod> ClassMethods => mClassMethods;
+        //List<CGMethod> mClassMethods { get; set; } = new List<CGMethod>();
+        //public List<CGMethod> ClassMethods => mClassMethods;
+        public List<CGMethod> ClassMethods { get; set; } = new List<CGMethod>();
 
-        List<CGClass> mInternalClasses { get; set; } = new List<CGClass>();
-        public List<CGClass> InternalClasses => mInternalClasses;
+        //List<CGClass> mInternalClasses { get; set; } = new List<CGClass>();
+        //public List<CGClass> InternalClasses => mInternalClasses;
+        public List<CGClass> InternalClasses { get; set; } = new List<CGClass>();
 
-        List<CGInterface> mInternalInterfaces { get; set; } = new List<CGInterface>();
-        public List<CGInterface> InternalInterfaces => mInternalInterfaces;
+        //List<CGInterface> mInternalInterfaces { get; set; } = new List<CGInterface>();
+        //public List<CGInterface> InternalInterfaces => mInternalInterfaces;
+        public List<CGInterface> InternalInterfaces { get; set; } = new List<CGInterface>();
 
-        List<CGEnum> mInternalEnums { get; set; } = new List<CGEnum>();
-        public List<CGEnum> InternalEnums => mInternalEnums;
+        //List<CGEnum> mInternalEnums { get; set; } = new List<CGEnum>();
+        //public List<CGEnum> InternalEnums => mInternalEnums;
+        public List<CGEnum> InternalEnums { get; set; } = new List<CGEnum>();
 
         public CGClass(string className, bool isStatic = false, bool isAbstract = false)
         {
             mAccessibilityLevel = AccessibilityLevel.Public;
             mClassName = className;
+            mIsStatic = isStatic;
+            mIsAbstract = isAbstract;
+        }
+
+        public CGClass(string className, string baseClassName, bool isStatic = false, bool isAbstract = false)
+        {
+            mAccessibilityLevel = AccessibilityLevel.Public;
+            mClassName = className;
+            mBaseClassName = baseClassName;
             mIsStatic = isStatic;
             mIsAbstract = isAbstract;
         }
@@ -60,45 +76,54 @@ namespace CSCodeGen
             mIsAbstract = isAbstract;
         }
 
-        public void AddInterfaceImplementation(string interfaceImplementation)
+        public CGClass(AccessibilityLevel accessibilityLevel, string className, string baseClassName, bool isStatic = false, bool isAbstract = false)
         {
-            mImplementations.Add(interfaceImplementation);
-        }
-
-        public void SetBaseClass(string baseClassName)
-        {
+            mAccessibilityLevel = accessibilityLevel;
+            mClassName = className;
             mBaseClassName = baseClassName;
+            mIsStatic = isStatic;
+            mIsAbstract = isAbstract;
         }
 
-        public void AddClassProperty(CGClassProperty classProperty)
-        {
-            mClassProperties.Add(classProperty);
-        }
+        //public void AddInterfaceImplementation(string interfaceImplementation)
+        //{
+        //    mImplementations.Add(interfaceImplementation);
+        //}
 
-        public void AddClassConstructor(CGClassConstructor classConstructor)
-        {
-            mClassConstructors.Add(classConstructor);
-        }
+        //public void SetBaseClass(string baseClassName)
+        //{
+        //    mBaseClassName = baseClassName;
+        //}
 
-        public void AddClassMethod(CGMethod classMethod)
-        {
-            mClassMethods.Add(classMethod);
-        }
+        //public void AddClassProperty(CGClassProperty classProperty)
+        //{
+        //    mClassProperties.Add(classProperty);
+        //}
 
-        public void AddInternalClass(CGClass internalClass)
-        {
-            mInternalClasses.Add(internalClass);
-        }
+        //public void AddClassConstructor(CGClassConstructor classConstructor)
+        //{
+        //    mClassConstructors.Add(classConstructor);
+        //}
 
-        public void AddInternalInterface(CGInterface internalInterface)
-        {
-            mInternalInterfaces.Add(internalInterface);
-        }
+        //public void AddClassMethod(CGMethod classMethod)
+        //{
+        //    mClassMethods.Add(classMethod);
+        //}
 
-        public void AddInternalEnum(CGEnum internalEnum)
-        {
-            mInternalEnums.Add(internalEnum);
-        }
+        //public void AddInternalClass(CGClass internalClass)
+        //{
+        //    mInternalClasses.Add(internalClass);
+        //}
+
+        //public void AddInternalInterface(CGInterface internalInterface)
+        //{
+        //    mInternalInterfaces.Add(internalInterface);
+        //}
+
+        //public void AddInternalEnum(CGEnum internalEnum)
+        //{
+        //    mInternalEnums.Add(internalEnum);
+        //}
 
         public override string ToString()
         {

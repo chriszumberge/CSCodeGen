@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSCodeGen.VsTests", "CSCode
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSCodeGen.Demo", "CSCodeGen.Demo\CSCodeGen.Demo.csproj", "{BFEB1FC1-262A-44FC-BD81-E66990C5E539}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlnGen", "SlnGen\SlnGen.csproj", "{FF8D562F-FC99-4308-B089-E07C9EF8E220}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlnGen.Demo", "SlnGen.Demo\SlnGen.Demo.csproj", "{A145E496-80A7-4845-A198-1C48E486F55D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{BFEB1FC1-262A-44FC-BD81-E66990C5E539}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFEB1FC1-262A-44FC-BD81-E66990C5E539}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFEB1FC1-262A-44FC-BD81-E66990C5E539}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF8D562F-FC99-4308-B089-E07C9EF8E220}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF8D562F-FC99-4308-B089-E07C9EF8E220}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF8D562F-FC99-4308-B089-E07C9EF8E220}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF8D562F-FC99-4308-B089-E07C9EF8E220}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A145E496-80A7-4845-A198-1C48E486F55D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A145E496-80A7-4845-A198-1C48E486F55D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A145E496-80A7-4845-A198-1C48E486F55D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A145E496-80A7-4845-A198-1C48E486F55D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

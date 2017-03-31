@@ -11,20 +11,23 @@ namespace CSCodeGen
         readonly string mNamespaceName;
         public string NamespaceName => mNamespaceName;
 
-        List<CGInterface> mInterfaces { get; set; } = new List<CGInterface>();
-        public IReadOnlyList<CGInterface> Interfaces => mInterfaces.AsReadOnly();
+        //List<CGInterface> mInterfaces { get; set; } = new List<CGInterface>();
+        //public IReadOnlyList<CGInterface> Interfaces => mInterfaces.AsReadOnly();
+        public List<CGInterface> Interfaces { get; set; } = new List<CGInterface>();
 
-        List<CGClass> mClasses { get; set; } = new List<CGClass>();
-        public IReadOnlyList<CGClass> Classes => mClasses.AsReadOnly();
+        //List<CGClass> mClasses { get; set; } = new List<CGClass>();
+        //public IReadOnlyList<CGClass> Classes => mClasses.AsReadOnly();
+        public List<CGClass> Classes { get; set; } = new List<CGClass>();
 
-        List<CGEnum> mEnums { get; set; } = new List<CGEnum>();
-        public List<CGEnum> Enums => mEnums;
+        //List<CGEnum> mEnums { get; set; } = new List<CGEnum>();
+        //public List<CGEnum> Enums => mEnums;
+        public List<CGEnum> Enums { get; set; } = new List<CGEnum>();
 
-        List<CGStruct> mStructs { get; set; } = new List<CGStruct>();
-        public List<CGStruct> Structs => mStructs;
+        //List<CGStruct> mStructs { get; set; } = new List<CGStruct>();
+        //public List<CGStruct> Structs => mStructs;
+        public List<CGStruct> Structs { get; set; } = new List<CGStruct>();
 
-
-        public CGNamespace(string namespaceName, IEnumerable<CGInterface> interfaces = null)
+        public CGNamespace(string namespaceName)
         {
             if (namespaceName == null)
             {
@@ -36,52 +39,80 @@ namespace CSCodeGen
             }
 
             mNamespaceName = namespaceName.Replace(" ", ".");
-
-            if (interfaces != null)
-            {
-                mInterfaces = interfaces.ToList();
-            }
         }
 
-        public void AddInterface(CGInterface @interface)
-        {
-            if (@interface != null)
-            {
-                mInterfaces.Add(@interface);
-            }
-        }
-        
-        public void RemoveInterface(CGInterface @interface)
-        {
-            if (@interface != null)
-            {
-                mInterfaces.Remove(@interface);
-            }
-        }
+        //public CGNamespace(string namespaceName, IEnumerable<CGInterface> interfaces = null, IEnumerable<CGClass> classes = null)
+        //{
+        //    if (namespaceName == null)
+        //    {
+        //        throw new ArgumentNullException(nameof(namespaceName));
+        //    }
+        //    if (namespaceName.Length == 0)
+        //    {
+        //        throw new ArgumentException("Argument cannot be an empty string.", nameof(namespaceName));
+        //    }
 
-        public void AddClass(CGClass @class)
-        {
-            if (@class != null)
-            {
-                mClasses.Add(@class);
-            }
-        }
+        //    mNamespaceName = namespaceName.Replace(" ", ".");
 
-        public void AddEnum(CGEnum @enum)
-        {
-            if (@enum != null)
-            {
-                mEnums.Add(@enum);
-            }
-        }
+        //    if (interfaces != null)
+        //    {
+        //        Interfaces = interfaces.ToList();
+        //    }
 
-        public void AddStruct(CGStruct @struct)
-        {
-            if (@struct != null)
-            {
-                mStructs.Add(@struct);
-            }
-        }
+        //    if (classes != null)
+        //    {
+        //        mClasses = classes.ToList();
+        //    }
+        //}
+
+        //public void AddInterface(CGInterface @interface)
+        //{
+        //    if (@interface != null)
+        //    {
+        //        Interfaces.Add(@interface);
+        //    }
+        //}
+
+        //public void RemoveInterface(CGInterface @interface)
+        //{
+        //    if (@interface != null)
+        //    {
+        //        Interfaces.Remove(@interface);
+        //    }
+        //}
+
+        //public void AddClass(CGClass @class)
+        //{
+        //    if (@class != null)
+        //    {
+        //        mClasses.Add(@class);
+        //    }
+        //}
+
+        //public void RemoveClass(CGClass @class)
+        //{
+        //    if (@class != null)
+        //    {
+        //        mClasses.Remove(@class);
+        //    }
+        //}
+
+
+        //public void AddEnum(CGEnum @enum)
+        //{
+        //    if (@enum != null)
+        //    {
+        //        mEnums.Add(@enum);
+        //    }
+        //}
+
+        //public void AddStruct(CGStruct @struct)
+        //{
+        //    if (@struct != null)
+        //    {
+        //        mStructs.Add(@struct);
+        //    }
+        //}
 
         public override string ToString()
         {

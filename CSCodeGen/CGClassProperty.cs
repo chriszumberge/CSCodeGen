@@ -35,14 +35,16 @@ namespace CSCodeGen
         AccessibilityLevel mGetterAccessibilityLevel { get; set; }
         public AccessibilityLevel GetterAccessibilityLevel => mGetterAccessibilityLevel;
 
-        StringBuilder mGetterTextBuilder { get; set; } = new StringBuilder();
-        public string GetterText => mGetterTextBuilder.ToString();
+        //StringBuilder mGetterTextBuilder { get; set; } = new StringBuilder();
+        //public string GetterText => mGetterTextBuilder.ToString();
+        public string GetterText { get; set; } = String.Empty;
 
         AccessibilityLevel mSetterAccessibilityLevel { get; set; }
         public AccessibilityLevel SetterAccessibilityLevel => mSetterAccessibilityLevel;
 
-        StringBuilder mSetterTextBuilder { get; set; } = new StringBuilder();
-        public string SetterText => mSetterTextBuilder.ToString();
+        //StringBuilder mSetterTextBuilder { get; set; } = new StringBuilder();
+        //public string SetterText => mSetterTextBuilder.ToString();
+        public string SetterText { get; set; } = String.Empty;
 
         public CGClassProperty(AccessibilityLevel accessibilityLevel, string propertyType, string propertyName, bool isStatic = false,
             AccessibilityLevel getterAccessibilityLevel = null, AccessibilityLevel setterAccessibilityLevel = null)
@@ -94,30 +96,30 @@ namespace CSCodeGen
             }
         }
 
-        public void AppendGetterText(string text)
-        {
-            mGetterTextBuilder.Append(text);
-        }
-        public void AppendLineToGetterText(string textLine)
-        {
-            mGetterTextBuilder.AppendLine(textLine);
-        }
-        public void ClearGetterText()
-        {
-            mGetterTextBuilder = new StringBuilder();
-        }
-        public void AppendSetterText(string text)
-        {
-            mSetterTextBuilder.Append(text);
-        }
-        public void AppendLineToSetterText(string textLine)
-        {
-            mSetterTextBuilder.AppendLine(textLine);
-        }
-        public void ClearSetterText()
-        {
-            mSetterTextBuilder = new StringBuilder();
-        }
+        //public void AppendGetterText(string text)
+        //{
+        //    mGetterTextBuilder.Append(text);
+        //}
+        //public void AppendLineToGetterText(string textLine)
+        //{
+        //    mGetterTextBuilder.AppendLine(textLine);
+        //}
+        //public void ClearGetterText()
+        //{
+        //    mGetterTextBuilder = new StringBuilder();
+        //}
+        //public void AppendSetterText(string text)
+        //{
+        //    mSetterTextBuilder.Append(text);
+        //}
+        //public void AppendLineToSetterText(string textLine)
+        //{
+        //    mSetterTextBuilder.AppendLine(textLine);
+        //}
+        //public void ClearSetterText()
+        //{
+        //    mSetterTextBuilder = new StringBuilder();
+        //}
 
         public override string ToString()
         {

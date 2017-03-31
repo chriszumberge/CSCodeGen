@@ -23,11 +23,15 @@ namespace CSCodeGen
         protected string mClassName { get; set; }
         public string ClassName => mClassName;
 
-        List<CGMethodArgument> mArguments { get; set; } = new List<CGMethodArgument>();
-        public List<CGMethodArgument> Arguments => mArguments;
+        //List<CGMethodArgument> mArguments { get; set; } = new List<CGMethodArgument>();
+        //public List<CGMethodArgument> Arguments => mArguments;
+        public List<CGMethodArgument> Arguments { get; set; } = new List<CGMethodArgument>();
 
-        StringBuilder mConstructorTextBuilder { get; set; } = new StringBuilder();
-        public string ConstructorText => mConstructorTextBuilder.ToString();
+        //StringBuilder mConstructorTextBuilder { get; set; } = new StringBuilder();
+        //public string ConstructorText => mConstructorTextBuilder.ToString();
+        public string ConstructorText { get; set; } = String.Empty;
+
+        public List<string> BaseClassArguments { get; set; } = new List<string>();
 
         public CGClassConstructor(string className)
         {
@@ -41,25 +45,25 @@ namespace CSCodeGen
             mAccessibilityLevel = accessibilityLevel;
         }
 
-        public void AppendConstructorText(string text)
-        {
-            mConstructorTextBuilder.Append(text);
-        }
+        //public void AppendConstructorText(string text)
+        //{
+        //    mConstructorTextBuilder.Append(text);
+        //}
 
-        public void AppendLineToConstructorText(string textLine)
-        {
-            mConstructorTextBuilder.AppendLine(textLine);
-        }
+        //public void AppendLineToConstructorText(string textLine)
+        //{
+        //    mConstructorTextBuilder.AppendLine(textLine);
+        //}
 
-        public void ClearConstructorText()
-        {
-            mConstructorTextBuilder = new StringBuilder();
-        }
+        //public void ClearConstructorText()
+        //{
+        //    mConstructorTextBuilder = new StringBuilder();
+        //}
 
-        public void AddArgument(CGMethodArgument argument)
-        {
-            mArguments.Add(argument);
-        }
+        //public void AddArgument(CGMethodArgument argument)
+        //{
+        //    mArguments.Add(argument);
+        //}
 
         public override string ToString()
         {
@@ -77,7 +81,16 @@ namespace CSCodeGen
                 }
             }
             sb.Append(")");
-            sb.Append("{");
+
+            if (BaseClassArguments.Count > 0)
+            {
+                sb.Append(" : base (");
+                sb.Append(String.Join(", ", BaseClassArguments));
+                sb.Append(")");
+            }
+
+            sb.AppendLine();
+            sb.AppendLine("{");
 
             string[] ctorTextLines = ConstructorText.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             foreach (string ctorTextLine in ctorTextLines)
@@ -85,7 +98,7 @@ namespace CSCodeGen
                 sb.AppendLine($"\t{ctorTextLine}");
             }
 
-            sb.Append("}");
+            sb.AppendLine("}");
             return sb.ToString();
         }
     }

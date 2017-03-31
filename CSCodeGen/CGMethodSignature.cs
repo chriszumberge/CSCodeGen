@@ -14,14 +14,17 @@ namespace CSCodeGen
         bool mIsStatic { get; set; } = false;
         public bool IsStatic => mIsStatic;
 
-        Type mReturnType { get; set; } = typeof(void);
-        public Type ReturnType => mReturnType;
+        //Type mReturnType { get; set; } = typeof(void);
+        //public Type ReturnType => mReturnType;
+        string mReturnType { get; set; } = "void";
+        public string ReturnType => mReturnType;
 
         string mMethodName { get; set; }
         public string MethodName => mMethodName;
 
-        List<CGMethodArgument> mArguments { get; set; } = new List<CGMethodArgument>();
-        public List<CGMethodArgument> Arguments => mArguments;
+        //List<CGMethodArgument> mArguments { get; set; } = new List<CGMethodArgument>();
+        //public List<CGMethodArgument> Arguments => mArguments;
+        public List<CGMethodArgument> Arguments { get; set; } = new List<CGMethodArgument>();
 
         bool mIsGeneric { get; set; } = false;
         public bool IsGeneric => mIsGeneric;
@@ -29,17 +32,11 @@ namespace CSCodeGen
         List<string> mGenericTypeNames { get; set; } = new List<string>();
         public List<string> GenericTypeNames => mGenericTypeNames;
 
-        public CGMethodSignature(string methodName, Type returnType = null, bool isStatic = false, IEnumerable<CGMethodArgument> arguments = null, IEnumerable<string> genericTypeNames = null)
+        public CGMethodSignature(string methodName, string returnType = "void", bool isStatic = false, IEnumerable<string> genericTypeNames = null)
         {
-            if (returnType == null) { returnType = typeof(void); }
-
             mAccessibilityLevel = AccessibilityLevel.Public;
             mIsStatic = isStatic;
             mMethodName = methodName;
-            if (arguments != null)
-            {
-                mArguments = arguments.ToList();
-            }
             mReturnType = returnType;
             if (genericTypeNames != null)
             {
@@ -48,17 +45,11 @@ namespace CSCodeGen
             }
         }
 
-        public CGMethodSignature(AccessibilityLevel accessibilityLevel, string methodName, Type returnType = null, bool isStatic = false, IEnumerable<CGMethodArgument> arguments = null, IEnumerable<string> genericTypeNames = null)
+        public CGMethodSignature(AccessibilityLevel accessibilityLevel, string methodName, string returnType = "void", bool isStatic = false, IEnumerable<string> genericTypeNames = null)
         {
-            if (returnType == null) { returnType = typeof(void); }
-
             mAccessibilityLevel = accessibilityLevel;
             mIsStatic = isStatic;
             mMethodName = methodName;
-            if (arguments != null)
-            {
-                mArguments = arguments.ToList();
-            }
             mReturnType = returnType;
             if (genericTypeNames != null)
             {
@@ -67,17 +58,42 @@ namespace CSCodeGen
             }
         }
 
-        public void AddArgument(CGMethodArgument argument)
-        {
-            mArguments.Add(argument);
-        }
+        //public CGMethodSignature(string methodName, Type returnType = null, bool isStatic = false, IEnumerable<string> genericTypeNames = null)
+        //{
+        //    if (returnType == null) { returnType = typeof(void); }
+
+        //    mAccessibilityLevel = AccessibilityLevel.Public;
+        //    mIsStatic = isStatic;
+        //    mMethodName = methodName;
+        //    mReturnType = returnType;
+        //    if (genericTypeNames != null)
+        //    {
+        //        mIsGeneric = true;
+        //        mGenericTypeNames = genericTypeNames.ToList();
+        //    }
+        //}
+
+        //public CGMethodSignature(AccessibilityLevel accessibilityLevel, string methodName, Type returnType = null, bool isStatic = false, IEnumerable<string> genericTypeNames = null)
+        //{
+        //    if (returnType == null) { returnType = typeof(void); }
+
+        //    mAccessibilityLevel = accessibilityLevel;
+        //    mIsStatic = isStatic;
+        //    mMethodName = methodName;
+        //    mReturnType = returnType;
+        //    if (genericTypeNames != null)
+        //    {
+        //        mIsGeneric = true;
+        //        mGenericTypeNames = genericTypeNames.ToList();
+        //    }
+        //}
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append($"{AccessibilityLevel} ");
             if (IsStatic) { sb.Append("static "); }
-            sb.Append($"{ReturnType.Name} ");
+            sb.Append($"{ReturnType} ");
             sb.Append($"{MethodName}");
 
             if (IsGeneric && GenericTypeNames.Count > 0)

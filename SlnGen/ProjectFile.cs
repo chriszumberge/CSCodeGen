@@ -9,11 +9,14 @@ namespace SlnGen
 {
     public class ProjectFile
     {
+        //public string FileName => mFileName;
+        //readonly string mFileName;
+
+        //public string FileExtension => mFileExtension;
+        //readonly string mFileExtension;
+
         public string FileName => mFileName;
         readonly string mFileName;
-
-        public string FileExtension => mFileExtension;
-        readonly string mFileExtension;
 
         public bool ShouldCompile => mShouldCompile;
         readonly bool mShouldCompile;
@@ -24,10 +27,13 @@ namespace SlnGen
         public string FileContents => mFileContents;
         protected string mFileContents { get; set; }
 
-        public ProjectFile(string fileName, string fileExtension, bool shouldCompile, bool isContent = false, string fileContents = null)
+        public List<string> DependentUpon { get; set; } = new List<string>();
+
+        //public ProjectFile(string fileName, string fileExtension, bool shouldCompile, bool isContent = false, string fileContents = null)
+        public ProjectFile(string fileName, bool shouldCompile, bool isContent = false, string fileContents = null)
         {
             mFileName = fileName;
-            mFileExtension = fileExtension;
+            //mFileExtension = fileExtension;
             mShouldCompile = shouldCompile;
             mIsContent = isContent;
 
@@ -43,8 +49,9 @@ namespace SlnGen
 
         public ProjectFile(CGFile file)
         {
-            mFileName = file.FileName;
-            mFileExtension = file.FileExtension;
+            mFileName = file.FileName + file.FileExtension;
+            //mFileName = file.FileName;
+            //mFileExtension = file.FileExtension;
             mShouldCompile = true;
             mIsContent = false;
             mFileContents = file.ToString();
@@ -52,13 +59,14 @@ namespace SlnGen
 
         public ProjectFile(CGFile file, bool shouldCompile, bool isContent)
         {
-            mFileName = file.FileName;
-            mFileExtension = file.FileExtension;
+            mFileName = file.FileName + file.FileExtension;
+            //mFileName = file.FileName;
+            //mFileExtension = file.FileExtension;
             mShouldCompile = shouldCompile;
             mIsContent = isContent;
             mFileContents = file.ToString();
         }
 
-        public string GetFileSystemName() => String.Concat(FileName, ".", FileExtension);
+        //public string GetFileSystemName() => String.Concat(FileName, ".", FileExtension);
     }
 }

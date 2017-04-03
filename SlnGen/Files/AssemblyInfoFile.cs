@@ -13,7 +13,7 @@ namespace SlnGen.Files
         readonly Version mAssemblyVersion;
         readonly Version mAssemblyFileVersion;
 
-        public AssemblyInfoFile(string assemblyTitle, Guid assemblyGuid, Version assemblyVersion, Version assemblyFileVersion) : base("AssemblyInfo", "cs", true, false)
+        public AssemblyInfoFile(string assemblyTitle, Guid assemblyGuid, Version assemblyVersion, Version assemblyFileVersion) : base("AssemblyInfo.cs", true, false)
         {
             mAssembltyTitle = assemblyTitle;
             mAssemblyGuid = assemblyGuid;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using ZESoft.Common.Extensions;
 
 namespace SlnGen
 {
@@ -29,14 +30,23 @@ namespace SlnGen
 
         public string GenerateSolutionFiles(string solutionPath)
         {
+            // TODO eventually not force it, but then we have to worry about the relative paths for the csproj references and I don't want
+            // to deal with that right now. Forcing this project structure... if the user cares enough to change it they probably know enough
+            // to be able to
+            bool createSolutionDirectory = true;
+
             string slnDirectoryPath = Path.Combine(solutionPath, SolutionName);
             DirectoryInfo slnDirectory = Directory.CreateDirectory(slnDirectoryPath);
-            Directory.CreateDirectory(Path.Combine(slnDirectoryPath, "packages"));
+
+            string packagesDirectoryPath = Path.Combine(slnDirectoryPath, "packages");
+            Directory.CreateDirectory(packagesDirectoryPath);
+
+            string projDirectoryPath = createSolutionDirectory ? Path.Combine(slnDirectoryPath, SolutionName) : slnDirectoryPath;
 
             Dictionary<CsProj, string> projectWithCsProjFilePath = new Dictionary<CsProj, string>();
             foreach (CsProj csproj in Projects)
             {
-                string csProjFilePath = csproj.GenerateProjectFiles(slnDirectoryPath);
+                string csProjFilePath = csproj.GenerateProjectFiles(projDirectoryPath, mSolutionGuid);
                 projectWithCsProjFilePath.Add(csproj, csProjFilePath);
             }
 
@@ -51,7 +61,7 @@ namespace SlnGen
             foreach (KeyValuePair<CsProj, string> projectAndCsProjFilePath in projectWithCsProjFilePath)
             {
                 CsProj project = projectAndCsProjFilePath.Key;
-                string relativeDirectory = projectAndCsProjFilePath.Value.Replace(String.Concat(@"\", slnDirectoryPath), String.Empty);
+                string relativeDirectory = projectAndCsProjFilePath.Value.Replace(String.Concat(@"\", projDirectoryPath), String.Empty);
 
                 slnTextBuilder.AppendLine($"Project(\"{{{SolutionGuid.ToString()}}}\") = \"{project.AssemblyName}\", \"{relativeDirectory}\", \"{{{project.AssemblyGuid.ToString()}}}");
                 slnTextBuilder.AppendLine("EndProject");
@@ -59,16 +69,33 @@ namespace SlnGen
 
             slnTextBuilder.AppendLine("Global");
             slnTextBuilder.AppendLine("\tGlobalSection(SolutionConfigurationPlatforms) = preSolution");
-            slnTextBuilder.AppendLine("\t\tDebug|Any CPU = Debug|Any CPU");
-            slnTextBuilder.AppendLine("\t\tRelease|Any CPU = Release|Any CPU");
+            //slnTextBuilder.AppendLine("\t\tDebug|Any CPU = Debug|Any CPU");
+            //slnTextBuilder.AppendLine("\t\tRelease|Any CPU = Release|Any CPU");
+            var supportedBuildConfigurations = GetSupportedBuildConfigurations();
+            foreach (var supportedConfig in supportedBuildConfigurations)
+            {
+                slnTextBuilder.AppendLine($"\t\t{supportedConfig.Configuration}|{supportedConfig.Platform} = {supportedConfig.Configuration}|{supportedConfig.Platform}");
+            }
             slnTextBuilder.AppendLine("\tEndGlobalSection");
             slnTextBuilder.AppendLine("\tGlobalSection(ProjectConfigurationPlatforms) = postSolution");
             foreach (CsProj csproj in Projects)
             {
-                slnTextBuilder.AppendLine($"\t\t{{{csproj.AssemblyGuid.ToString()}}}.Debug|Any CPU.ActiveCfg = Debug|Any CPU");
-                slnTextBuilder.AppendLine($"\t\t{{{csproj.AssemblyGuid.ToString()}}}.Debug|Any CPU.Build.0 = Debug|Any CPU");
-                slnTextBuilder.AppendLine($"\t\t{{{csproj.AssemblyGuid.ToString()}}}.Release|Any CPU.ActiveCfg = Release|Any CPU");
-                slnTextBuilder.AppendLine($"\t\t{{{csproj.AssemblyGuid.ToString()}}}.Release|Any CPU.Build.0 = Release|Any CPU");
+                //slnTextBuilder.AppendLine($"\t\t{{{csproj.AssemblyGuid.ToString()}}}.Debug|Any CPU.ActiveCfg = Debug|Any CPU");
+                //slnTextBuilder.AppendLine($"\t\t{{{csproj.AssemblyGuid.ToString()}}}.Debug|Any CPU.Build.0 = Debug|Any CPU");
+                //slnTextBuilder.AppendLine($"\t\t{{{csproj.AssemblyGuid.ToString()}}}.Release|Any CPU.ActiveCfg = Release|Any CPU");
+                //slnTextBuilder.AppendLine($"\t\t{{{csproj.AssemblyGuid.ToString()}}}.Release|Any CPU.Build.0 = Release|Any CPU");
+                foreach (var supportedConfig in csproj.SupportedBuildConfigurations)
+                {
+                    slnTextBuilder.AppendLine($"\t\t{{{csproj.AssemblyGuid.ToString()}}}.{supportedConfig.Configuration}|{supportedConfig.Platform}.ActiveCfg = {supportedConfig.Configuration}|{supportedConfig.Platform}");
+                    if (supportedConfig.Build)
+                    {
+                        slnTextBuilder.AppendLine($"\t\t{{{csproj.AssemblyGuid.ToString()}}}.{supportedConfig.Configuration}|{supportedConfig.Platform}.Build.0 = {supportedConfig.Configuration}|{supportedConfig.Platform}");
+                    }
+                    if (supportedConfig.Deploy)
+                    {
+                        slnTextBuilder.AppendLine($"\t\t{{{csproj.AssemblyGuid.ToString()}}}.{supportedConfig.Configuration}|{supportedConfig.Platform}.Deploy.0 = {supportedConfig.Configuration}|{supportedConfig.Platform}");
+                    }
+                }
             }
             slnTextBuilder.AppendLine("\tEndGlobalSection");
             slnTextBuilder.AppendLine("\tGlobalSection(SolutionProperties) = preSolution");
@@ -79,6 +106,13 @@ namespace SlnGen
             File.WriteAllText(Path.Combine(slnDirectoryPath, String.Concat(SolutionName, ".sln")), slnTextBuilder.ToString());
 
             return slnDirectoryPath;
+        }
+
+        private List<SupportedBuildConfiguration> GetSupportedBuildConfigurations()
+        {
+            List<SupportedBuildConfiguration> distinctConfigurations = mProjects.SelectMany(x => x.SupportedBuildConfigurations)
+                .DistinctBy(x => $"{x.Configuration}|{x.Platform}").ToList();
+            return distinctConfigurations;
         }
     }
 }

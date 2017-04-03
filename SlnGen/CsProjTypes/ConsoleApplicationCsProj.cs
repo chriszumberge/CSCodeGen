@@ -12,9 +12,11 @@ namespace SlnGen
 
         public ConsoleApplicationCsProj(string assemblyName, string targetFrameworkVersion) : base(assemblyName, "Exe", targetFrameworkVersion)
         {
+            mSupportedBuildConfigurations.Add(new SupportedBuildConfiguration("Debug", "Any CPU"));
+            mSupportedBuildConfigurations.Add(new SupportedBuildConfiguration("Release", "Any CPU"));
         }
 
-        protected override XElement[] GetProjectSpecificPropertyNodes(XNamespace xNamespace)
+        protected override XElement[] GetProjectSpecificPropertyNodes(XNamespace xNamespace, Guid solutionGuid)
         {
             return new XElement[] { new XElement(xNamespace+"AutoGenerateBindingRedirects", new XText("true")) };
         }

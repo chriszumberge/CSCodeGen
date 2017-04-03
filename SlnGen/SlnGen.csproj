@@ -38,13 +38,21 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="ZESoft.Common, Version=1.0.6298.40553, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZESoft.Common.1.0.6298.40553\lib\portable45-net45+win8+wpa81\ZESoft.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppConfigFile.cs" />
+    <Compile Include="CsProjTypes\AndroidCsProj.cs" />
     <Compile Include="CsProjTypes\ClassLibraryCsProj.cs" />
     <Compile Include="ConfigFile.cs" />
     <Compile Include="CsProjTypes\ConsoleApplicationCsProj.cs" />
     <Compile Include="CsProj.cs" />
+    <Compile Include="CsProjTypes\iOSCsProj.cs" />
+    <Compile Include="CsProjTypes\PortableClassLibraryCsProj.cs" />
+    <Compile Include="EmbeddedResourceProjectFile.cs" />
     <Compile Include="Files\AppConfigFile.cs" />
     <Compile Include="Files\AssemblyInfoFile.cs" />
     <Compile Include="Files\ConfigFile.cs" />
@@ -66,6 +74,9 @@
       <Project>{49230e6d-b19f-4c0e-a746-1674a1515435}</Project>
       <Name>CSCodeGen</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

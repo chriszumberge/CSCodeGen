@@ -9,7 +9,7 @@ namespace SlnGen.Files
     public class ConfigFile : ProjectFile
     {
         public ConfigFile(string fileName)
-            : base(fileName, "config", false, false, null)
+            : base(fileName+ ".config", false, false, null)
         {
             
         }

@@ -38,6 +38,9 @@ namespace SlnGen
         public List<ProjectFolder> Folders => mFolders;
         protected List<ProjectFolder> mFolders { get; set; }
 
+        public List<SupportedBuildConfiguration> SupportedBuildConfigurations => mSupportedBuildConfigurations;
+        protected List<SupportedBuildConfiguration> mSupportedBuildConfigurations { get; set; }
+
         internal CsProj(string assemblyName, string outputType, string targetFrameworkVersion)
         {
             mAssemblyGuid = Guid.NewGuid();
@@ -47,6 +50,7 @@ namespace SlnGen
             mNugetPackages = new List<NugetPackage>();
             mFiles = new List<ProjectFile>();
             mFolders = new List<ProjectFolder>();
+            mSupportedBuildConfigurations = new List<SupportedBuildConfiguration>();
 
             mAssemblyName = assemblyName;
             mOutputType = outputType;
@@ -60,13 +64,18 @@ namespace SlnGen
             mAssemblyReferences.Add(References.Assemblies.SystemNetHttp);
             mAssemblyReferences.Add(References.Assemblies.SystemXml);
 
+            AddFilesAndFoldersToProject();
+        }
+
+        protected virtual void AddFilesAndFoldersToProject()
+        {
             mFolders.Add(new ProjectFolder("Properties")
             {
                 Files = {
                     new Files.AssemblyInfoFile(mAssemblyName, mAssemblyGuid, new Version(1, 0, 0, 0), new Version(1, 0, 0, 0))
                 }
             });
-            mFiles.Add(new ProjectFile("packages", "config", false, false));
+            mFiles.Add(new ProjectFile("packages.config", false, false));
         }
 
         public void AddAssemblyReference(AssemblyReference assemblyReference) => mAssemblyReferences.Add(assemblyReference);
@@ -111,7 +120,7 @@ namespace SlnGen
         void IFileContainer.AddFolder(ProjectFolder folder) => mFolders.Add(folder);
 
         XNamespace xNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
-        internal string GenerateProjectFiles(string solutionDirectoryPath)
+        internal string GenerateProjectFiles(string solutionDirectoryPath, Guid solutionGuid)
         {
             string csprojDirectoryPath = Path.Combine(solutionDirectoryPath, AssemblyName);
             DirectoryInfo csprojDirectory = Directory.CreateDirectory(csprojDirectoryPath);
@@ -167,18 +176,18 @@ namespace SlnGen
                                             new XElement(xNamespace+"FileAlignment",
                                                 new XText("512")
                                                 ),
-                                            GetProjectSpecificPropertyNodes(xNamespace)
+                                            GetProjectSpecificPropertyNodes(xNamespace, solutionGuid)
                                         ), // END PROPERTY GROUP
                                         GetDebugAnyCPUPropertyGroup(),
                                         GetReleaseAnyCPUPropertyGroup(),
                                         GetAssemblyReferenceItemGroup(),
                                         GetProjectReferenceItemGroup(),
                                         GetCompileFilesItemGroup(),
+                                        GetEmbeddedFilesItemGroup(),
                                         GetContentFilesItemGroup(),
                                         GetNoneFilesItemGroup(),
-                                        new XElement(xNamespace+"Import",
-                                            new XAttribute("Project", @"$(MSBuildToolsPath)\Microsoft.CSharp.targets")
-                                        )
+                                        GetImportProjectItems(xNamespace),
+                                        GetTargetItems(xNamespace)
                                     ); // END PROJECT
             string csprojFilePath = Path.Combine(csprojDirectoryPath, String.Concat(AssemblyName, ".csproj"));
             xmlNode.Save(csprojFilePath);
@@ -244,7 +253,40 @@ namespace SlnGen
                     new XElement(xNamespace+"Compile",
                         new XAttribute("Include", compilableFile.Value)
                     );
+
+                foreach (string dependent in compilableFile.Key.DependentUpon)
+                {
+                    compilableElement.Add(
+                        new XElement(xNamespace+"DependentUpon",
+                            new XText(dependent)
+                        )
+                    );
+                }
+
                 itemGroup.Add(compilableElement);
+            }
+            return itemGroup;
+        }
+
+        private XElement GetEmbeddedFilesItemGroup()
+        {
+            List<KeyValuePair<ProjectFile, string>> embeddedFiles = tempFileRelativePathDictionary.Where(x => x.Key is EmbeddedResourceProjectFile).ToList();
+            XElement itemGroup = new XElement(xNamespace + "ItemGroup");
+            foreach(KeyValuePair<ProjectFile, string> embeddedFile in embeddedFiles)
+            {
+                EmbeddedResourceProjectFile typeCastedFile = embeddedFile.Key as EmbeddedResourceProjectFile;
+
+                XElement embeddedElement =
+                    new XElement(xNamespace+"EmbeddedResource",
+                        new XAttribute("Include", embeddedFile.Value),
+                        new XElement(xNamespace+"SubType",
+                            new XText(typeCastedFile.SubType)
+                        ),
+                        new XElement(xNamespace+"Generator",
+                            new XText(typeCastedFile.Generator)
+                        )
+                    );
+                itemGroup.Add(embeddedElement);
             }
             return itemGroup;
         }
@@ -266,7 +308,7 @@ namespace SlnGen
 
         private XElement GetNoneFilesItemGroup()
         {
-            List<KeyValuePair<ProjectFile, string>> noneTypeFiles = tempFileRelativePathDictionary.Where(x => !x.Key.ShouldCompile && !x.Key.IsContent).ToList();
+            List<KeyValuePair<ProjectFile, string>> noneTypeFiles = tempFileRelativePathDictionary.Where(x => !x.Key.ShouldCompile && !x.Key.IsContent && !(x.Key is EmbeddedResourceProjectFile)).ToList();
             XElement itemGroup = new XElement(xNamespace+"ItemGroup");
             foreach (KeyValuePair<ProjectFile, string> noneTypeFile in noneTypeFiles)
             {
@@ -335,7 +377,24 @@ namespace SlnGen
                 );
         }
 
-        protected abstract XElement[] GetProjectSpecificPropertyNodes(XNamespace xNamespace);
+        protected virtual XElement[] GetImportProjectItems(XNamespace xNamespace)
+        {
+            return new XElement[] {
+                new XElement(xNamespace + "Import",
+                    new XAttribute("Project", @"$(MSBuildToolsPath)\Microsoft.CSharp.targets")
+                )
+            };
+        }
+
+        protected virtual XElement[] GetTargetItems(XNamespace xNamespace)
+        {
+            return new XElement[] { };
+        }
+
+        protected virtual XElement[] GetProjectSpecificPropertyNodes(XNamespace xNamespace, Guid solutionGuid)
+        {
+            return new XElement[] { };
+        }
 
         Dictionary<ProjectFile, string> tempFileRelativePathDictionary = new Dictionary<ProjectFile, string>();
         string tempCsProjDirectoryPath;
@@ -349,7 +408,7 @@ namespace SlnGen
             // Add files to this directory
             foreach (ProjectFile file in container.GetFiles())
             {
-                string filePath = Path.Combine(currentPath, file.GetFileSystemName());
+                string filePath = Path.Combine(currentPath, file.FileName);
                 File.WriteAllText(filePath, file.FileContents);
                 tempFileRelativePathDictionary.Add(file, filePath.Replace(String.Concat(tempCsProjDirectoryPath, @"\"), String.Empty));
             }
@@ -358,6 +417,27 @@ namespace SlnGen
             {
                 AddProjectFilesAndFolders(folder, Path.Combine(currentPath, folder.FolderName));
             }
+        }
+
+    }
+
+    public class SupportedBuildConfiguration
+    {
+        string mConfiguration { get; set; }
+        public string Configuration => mConfiguration;
+        string mPlatform { get; set; }
+        public string Platform => mPlatform;
+        bool mBuild { get; set; }
+        public bool Build => mBuild;
+        bool mDeploy { get; set; }
+        public bool Deploy => mDeploy;
+
+        public SupportedBuildConfiguration(string configuration, string platform, bool build = true, bool deploy = false)
+        {
+            mConfiguration = configuration;
+            mPlatform = platform;
+            mBuild = build;
+            mDeploy = deploy;
         }
     }
 }

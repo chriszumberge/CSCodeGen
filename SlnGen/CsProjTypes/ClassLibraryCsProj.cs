@@ -11,12 +11,8 @@ namespace SlnGen
     {
         public ClassLibraryCsProj(string assemblyName, string targetFrameworkVersion) : base(assemblyName, "Library", targetFrameworkVersion)
         {
-
-        }
-
-        protected override XElement[] GetProjectSpecificPropertyNodes(XNamespace xNamespace)
-        {
-            return new XElement[] { };
+            mSupportedBuildConfigurations.Add(new SupportedBuildConfiguration("Debug", "Any CPU"));
+            mSupportedBuildConfigurations.Add(new SupportedBuildConfiguration("Release", "Any CPU"));
         }
     }
 }

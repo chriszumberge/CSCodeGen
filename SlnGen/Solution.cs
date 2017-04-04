@@ -10,14 +10,37 @@ namespace SlnGen
 {
     public sealed class Solution
     {
+        /// <summary>
+        /// Gets the name of the solution.
+        /// </summary>
+        /// <value>
+        /// The name of the solution.
+        /// </value>
         public string SolutionName => mSolutionName;
         readonly string mSolutionName;
 
+        /// <summary>
+        /// Gets the projects.
+        /// </summary>
+        /// <value>
+        /// The projects.
+        /// </value>
         public List<CsProj> Projects => mProjects;
         private List<CsProj> mProjects { get; set; }
 
+        /// <summary>
+        /// Gets the solution unique identifier.
+        /// </summary>
+        /// <value>
+        /// The solution unique identifier.
+        /// </value>
         public Guid SolutionGuid => mSolutionGuid;
         readonly Guid mSolutionGuid;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Solution"/> class.
+        /// </summary>
+        /// <param name="solutionName">Name of the solution.</param>
         public Solution(string solutionName)
         {
             mSolutionName = solutionName;
@@ -26,6 +49,11 @@ namespace SlnGen
             mProjects = new List<CsProj>();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Solution"/> class.
+        /// </summary>
+        /// <param name="solutionName">Name of the solution.</param>
+        /// <param name="predefinedGuid">The predefined unique identifier.</param>
         public Solution(string solutionName, Guid predefinedGuid)
         {
             mSolutionName = solutionName;
@@ -34,8 +62,17 @@ namespace SlnGen
             mProjects = new List<CsProj>();
         }
 
+        /// <summary>
+        /// Adds the project.
+        /// </summary>
+        /// <param name="project">The project.</param>
         public void AddProject(CsProj project) => mProjects.Add(project);
 
+        /// <summary>
+        /// Generates the solution files.
+        /// </summary>
+        /// <param name="solutionPath">The solution path.</param>
+        /// <returns></returns>
         public string GenerateSolutionFiles(string solutionPath)
         {
             // TODO eventually not force it, but then we have to worry about the relative paths for the csproj references and I don't want

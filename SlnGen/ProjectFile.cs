@@ -61,7 +61,7 @@ namespace SlnGen
 
         public ProjectFile(CGFile file)
         {
-            mFileName = file.FileName + file.FileExtension;
+            mFileName = file.FileName + "." + file.FileExtension;
             //mFileName = file.FileName;
             //mFileExtension = file.FileExtension;
             mShouldCompile = true;
@@ -72,7 +72,7 @@ namespace SlnGen
 
         public ProjectFile(CGFile file, bool shouldCompile, bool isContent)
         {
-            mFileName = file.FileName + file.FileExtension;
+            mFileName = file.FileName + "." + file.FileExtension;
             //mFileName = file.FileName;
             //mFileExtension = file.FileExtension;
             mShouldCompile = shouldCompile;

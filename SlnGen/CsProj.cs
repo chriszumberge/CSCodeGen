@@ -75,7 +75,7 @@ namespace SlnGen
             mFolders.Add(new ProjectFolder("Properties")
             {
                 Files = {
-                    new Files.AssemblyInfoFile(mAssemblyName, mAssemblyGuid, new Version(1, 0, 0, 0), new Version(1, 0, 0, 0))
+                    new AssemblyInfoFile(mAssemblyName, mAssemblyGuid, new Version(1, 0, 0, 0), new Version(1, 0, 0, 0))
                 }
             });
             mFiles.Add(new ProjectFile("packages.config", false, false));
@@ -113,6 +113,12 @@ namespace SlnGen
                 fileContainer = fileContainerFolder;
             }
             fileContainer.AddFile(file);
+        }
+
+        public void AddFileToFolder(XamlProjectFile file, params string[] folderNameHierarchy)
+        {
+            this.AddFileToFolder(file.XamlCsFile, folderNameHierarchy);
+            this.AddFileToFolder(file.XamlFile, folderNameHierarchy);
         }
 
         List<ProjectFile> IFileContainer.GetFiles() => mFiles;
@@ -483,8 +489,8 @@ namespace SlnGen
                 AddProjectFilesAndFolders(folder, Path.Combine(currentPath, folder.FolderName));
             }
         }
-
     }
+
 
     public class SupportedBuildConfiguration
     {

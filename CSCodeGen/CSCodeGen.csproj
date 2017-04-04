@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="AccessibilityLevel.cs" />
     <Compile Include="CGClass.cs" />
+    <Compile Include="CGClassField.cs" />
     <Compile Include="CGClassProperty.cs" />
     <Compile Include="CGFile.cs" />
     <Compile Include="CGInterface.cs" />

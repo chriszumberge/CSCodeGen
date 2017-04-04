@@ -48,7 +48,7 @@ namespace SlnGen
             base.AddFilesAndFoldersToProject();
 
             this.AddFileToFolder(new ProjectFile("AboutAssets.txt", false, false), "Assets");
-            this.AddFileToFolder(new AndroidManifestFile(), "Properties");
+            this.AddFileToFolder(new AndroidManifestFile(AssemblyName), "Properties");
             mFolders.Add(new ProjectFolder("Resources")
             {
                 Folders =
@@ -82,7 +82,8 @@ namespace SlnGen
                 Files =
                 {
                     new ProjectFile("AboutResources.txt", false, false),
-                    new ProjectFile("Resource.Designer.cs")
+                    //new ProjectFile("Resource.Designer.cs")
+                    new ProjectFile(DefaultAndroidResourceDesignerCreator.GetFile(AssemblyName))
                 }
             });
             this.AddFileToFolder(new MainActivityFile());

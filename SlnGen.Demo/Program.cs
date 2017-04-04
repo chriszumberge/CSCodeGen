@@ -22,16 +22,11 @@ namespace SlnGen.Demo
         private static string TestXamarinSolution()
         {
             CsProj pcl = new PortableClassLibraryCsProj("TestCrossPlatformPCL");
-            pcl.AddFileToFolder(new ProjectFile("App.xaml.cs", true)
-            {
-                DependentUpon = { "App.xaml" }
-            });
-            pcl.AddFileToFolder(new ProjectFile("MainPage.xaml.cs", true)
-            {
-                DependentUpon = { "MainPage.xaml" }
-            });
-            pcl.AddFileToFolder(new EmbeddedResourceProjectFile("App.xaml", "Designer", "MSBuild:UpdateDesignTimeXaml"));
-            pcl.AddFileToFolder(new EmbeddedResourceProjectFile("MainPage.xaml", "Designer", "MSBuild:UpdateDesignTimeXaml"));
+
+            XamlProjectFile app = new XamlProjectFile("App");
+            XamlProjectFile mainPage = new XamlProjectFile("MainPage");
+            pcl.AddFileToFolder(app);
+            pcl.AddFileToFolder(mainPage);
 
             CsProj droidlib = new AndroidCsProj("TestCrossPlatformPCL.Android", "blah", "blah");
             droidlib.AddProjectReference(new ProjectReference(pcl.AssemblyName,

@@ -57,11 +57,14 @@
     <Compile Include="Files\AppDelegateFile.cs" />
     <Compile Include="Files\AssemblyInfoFile.cs" />
     <Compile Include="Files\ConfigFile.cs" />
+    <Compile Include="Files\DefaultAndroidResourceDesignerCreator.cs" />
     <Compile Include="Files\EntitlementsPListFile.cs" />
     <Compile Include="Files\InfoPListFile.cs" />
     <Compile Include="Files\iOSMainFile.cs" />
     <Compile Include="Files\MainActivityFile.cs" />
     <Compile Include="Files\WebConfigFile.cs" />
+    <Compile Include="Files\XamlProjectFile.cs" />
+    <Compile Include="FileTemplate.cs" />
     <Compile Include="IFileContainer.cs" />
     <Compile Include="NugetPackage.cs" />
     <Compile Include="ProjectFile.cs" />
@@ -81,6 +84,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Templates\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CSCodeGen
 {
-    public sealed class CGClass
+    public class CGClass
     {
         AccessibilityLevel mAccessibilityLevel { get; set; }
         public AccessibilityLevel AccessibilityLevel => mAccessibilityLevel;
@@ -16,6 +16,9 @@ namespace CSCodeGen
 
         bool mIsAbstract { get; set; } = false;
         public bool IsAbstract => mIsAbstract;
+
+        bool mIsPartial { get; set; } = false;
+        public bool IsPartial => mIsPartial;
 
         string mClassName { get; set; }
         public string ClassName => mClassName;
@@ -30,6 +33,8 @@ namespace CSCodeGen
         //List<CGClassProperty> mClassProperties { get; set; } = new List<CGClassProperty>();
         //public List<CGClassProperty> ClassProperties => mClassProperties;
         public List<CGClassProperty> ClassProperties { get; set; } = new List<CGClassProperty>();
+
+        public List<CGClassField> ClassFields { get; set; } = new List<CGClassField>();
 
         //List<CGClassConstructor> mClassConstructors { get; set; } = new List<CGClassConstructor>();
         //public List<CGClassConstructor> ClassConstructors => mClassConstructors;
@@ -51,38 +56,42 @@ namespace CSCodeGen
         //public List<CGEnum> InternalEnums => mInternalEnums;
         public List<CGEnum> InternalEnums { get; set; } = new List<CGEnum>();
 
-        public CGClass(string className, bool isStatic = false, bool isAbstract = false)
+        public CGClass(string className, bool isStatic = false, bool isAbstract = false, bool isPartial = false)
         {
             mAccessibilityLevel = AccessibilityLevel.Public;
             mClassName = className;
             mIsStatic = isStatic;
             mIsAbstract = isAbstract;
+            mIsPartial = isPartial;
         }
 
-        public CGClass(string className, string baseClassName, bool isStatic = false, bool isAbstract = false)
+        public CGClass(string className, string baseClassName, bool isStatic = false, bool isAbstract = false, bool isPartial = false)
         {
             mAccessibilityLevel = AccessibilityLevel.Public;
             mClassName = className;
             mBaseClassName = baseClassName;
             mIsStatic = isStatic;
             mIsAbstract = isAbstract;
+            mIsPartial = isPartial;
         }
 
-        public CGClass(AccessibilityLevel accessibilityLevel, string className, bool isStatic = false, bool isAbstract = false)
+        public CGClass(AccessibilityLevel accessibilityLevel, string className, bool isStatic = false, bool isAbstract = false, bool isPartial = false)
         {
             mAccessibilityLevel = accessibilityLevel;
             mClassName = className;
             mIsStatic = isStatic;
             mIsAbstract = isAbstract;
+            mIsPartial = isPartial;
         }
 
-        public CGClass(AccessibilityLevel accessibilityLevel, string className, string baseClassName, bool isStatic = false, bool isAbstract = false)
+        public CGClass(AccessibilityLevel accessibilityLevel, string className, string baseClassName, bool isStatic = false, bool isAbstract = false, bool isPartial = false)
         {
             mAccessibilityLevel = accessibilityLevel;
             mClassName = className;
             mBaseClassName = baseClassName;
             mIsStatic = isStatic;
             mIsAbstract = isAbstract;
+            mIsPartial = isPartial;
         }
 
         //public void AddInterfaceImplementation(string interfaceImplementation)
@@ -131,6 +140,7 @@ namespace CSCodeGen
             sb.Append($"{AccessibilityLevel.ToString()} ");
             if (mIsStatic) { sb.Append("static "); }
             if (mIsAbstract) { sb.Append("abstract "); }
+            if (mIsPartial) { sb.Append("partial "); }
             sb.Append($"class {ClassName}");
 
             if (!String.IsNullOrEmpty(BaseClassName) || Implementations.Count > 0)
@@ -157,6 +167,14 @@ namespace CSCodeGen
                 foreach (string propertyLine in propertyLines)
                 {
                     sb.AppendLine($"\t{propertyLine}");
+                }
+            }
+            foreach (CGClassField field in ClassFields)
+            {
+                string[] fieldLines = field.ToString().Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                foreach (string fieldLine in fieldLines)
+                {
+                    sb.AppendLine($"\t{fieldLine}");
                 }
             }
             foreach (CGClassConstructor ctor in ClassConstructors)
@@ -202,6 +220,63 @@ namespace CSCodeGen
 
             sb.AppendLine("}");
             return sb.ToString();
+        }
+    }
+
+    public sealed class StaticCGClass : CGClass
+    {
+        public StaticCGClass(string className) : base(className, true, false, false)
+        {
+        }
+
+        public StaticCGClass(AccessibilityLevel accessibilityLevel, string className) : base(accessibilityLevel, className, true, false, false)
+        {
+        }
+
+        public StaticCGClass(string className, string baseClassName) : base(className, baseClassName, true, false, false)
+        {
+        }
+
+        public StaticCGClass(AccessibilityLevel accessibilityLevel, string className, string baseClassName) : base(accessibilityLevel, className, baseClassName, true, false, false)
+        {
+        }
+    }
+
+    public sealed class AbstractCGClass : CGClass
+    {
+        public AbstractCGClass(string className) : base(className, false, true, false)
+        {
+        }
+
+        public AbstractCGClass(AccessibilityLevel accessibilityLevel, string className) : base(accessibilityLevel, className, false, true, false)
+        {
+        }
+
+        public AbstractCGClass(string className, string baseClassName) : base(className, baseClassName, false, true, false)
+        {
+        }
+
+        public AbstractCGClass(AccessibilityLevel accessibilityLevel, string className, string baseClassName) : base(accessibilityLevel, className, baseClassName, false, true, false)
+        {
+        }
+    }
+
+    public sealed class PartialCGClass : CGClass
+    {
+        public PartialCGClass(string className) : base(className, false, false, true)
+        {
+        }
+
+        public PartialCGClass(AccessibilityLevel accessibilityLevel, string className) : base(accessibilityLevel, className, false, false, true)
+        {
+        }
+
+        public PartialCGClass(string className, string baseClassName) : base(className, baseClassName, false, false, true)
+        {
+        }
+
+        public PartialCGClass(AccessibilityLevel accessibilityLevel, string className, string baseClassName) : base(accessibilityLevel, className, baseClassName, false, false, true)
+        {
         }
     }
 }

@@ -22,6 +22,8 @@ namespace CSCodeGen
         //public IReadOnlyList<CGNamespace> Namespaces => mNamespaces;
         public List<CGNamespace> Namespaces { get; set; } = new List<CGNamespace>();
 
+        public List<string> AdditionalLines { get; set; } = new List<string>();
+
         public CGFile(string fileNameWithExtension)
         {
             int idx = fileNameWithExtension.LastIndexOf(".");
@@ -201,6 +203,13 @@ namespace CSCodeGen
             foreach (var @namespace in Namespaces)
             {
                 sb.AppendLine(@namespace.ToString());
+            }
+
+            sb.AppendLine();
+
+            foreach (var line in AdditionalLines)
+            {
+                sb.AppendLine(line);
             }
 
             return sb.ToString();

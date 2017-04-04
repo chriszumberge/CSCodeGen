@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace SlnGen.Files
+namespace SlnGen
 {
     public sealed class AppConfigFile : ConfigFile
     {
@@ -29,7 +29,8 @@ namespace SlnGen.Files
                 using (var streamReader = new StreamReader(memoryStream))
                 {
                     string content = streamReader.ReadToEnd();
-                    mFileContents = content;
+                    //mFileContents = content;
+                    FileContents = content;
                 }
             }
         }

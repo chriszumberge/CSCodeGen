@@ -26,6 +26,14 @@ namespace SlnGen
             mProjects = new List<CsProj>();
         }
 
+        public Solution(string solutionName, Guid predefinedGuid)
+        {
+            mSolutionName = solutionName;
+            mSolutionGuid = predefinedGuid;
+
+            mProjects = new List<CsProj>();
+        }
+
         public void AddProject(CsProj project) => mProjects.Add(project);
 
         public string GenerateSolutionFiles(string solutionPath)

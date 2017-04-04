@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace SlnGen
 {
-    public class ConfigFile
+    public sealed class AndroidManifestFile : ProjectFile
     {
-        internal ConfigFile()
+        public AndroidManifestFile() : base("AndroidManifest.xml", false, false)
         {
 
         }

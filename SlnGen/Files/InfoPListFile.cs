@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace SlnGen
 {
-    public sealed class WebConfigFile : ConfigFile
+    public sealed class InfoPListFile : ProjectFile
     {
+        public InfoPListFile() : base("Info.plist", false, false)
+        {
+
+        }
     }
 }

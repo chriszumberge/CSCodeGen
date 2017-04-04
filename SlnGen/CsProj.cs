@@ -41,6 +41,9 @@ namespace SlnGen
         public List<SupportedBuildConfiguration> SupportedBuildConfigurations => mSupportedBuildConfigurations;
         protected List<SupportedBuildConfiguration> mSupportedBuildConfigurations { get; set; }
 
+        protected string mDefaultBuildConfiguration = "Debug";
+        protected string mDefaultBuildPlatform = "AnyCPU";
+
         internal CsProj(string assemblyName, string outputType, string targetFrameworkVersion)
         {
             mAssemblyGuid = Guid.NewGuid();
@@ -149,11 +152,11 @@ namespace SlnGen
                                         new XElement(xNamespace+"PropertyGroup",
                                             new XElement(xNamespace+"Configuration",
                                                 new XAttribute("Condition", " '$(Configuration)' == '' "),
-                                                new XText("Debug")
+                                                new XText(mDefaultBuildConfiguration)
                                             ),
                                             new XElement(xNamespace+"Platform",
                                                 new XAttribute("Condition", " '$(Platform)' == '' "),
-                                                new XText("AnyCPU")
+                                                new XText(mDefaultBuildPlatform)
                                             ),
                                             new XElement(xNamespace+"ProjectGuid",
                                                 new XText(String.Concat("{", AssemblyGuid.ToString(), "}"))
@@ -178,14 +181,14 @@ namespace SlnGen
                                                 ),
                                             GetProjectSpecificPropertyNodes(xNamespace, solutionGuid)
                                         ), // END PROPERTY GROUP
-                                        GetDebugAnyCPUPropertyGroup(),
-                                        GetReleaseAnyCPUPropertyGroup(),
+                                        GetBuildConfigurationPropertyGroups(xNamespace),
                                         GetAssemblyReferenceItemGroup(),
                                         GetProjectReferenceItemGroup(),
                                         GetCompileFilesItemGroup(),
-                                        GetEmbeddedFilesItemGroup(),
+                                        GetOtherFileItemGroup(),
                                         GetContentFilesItemGroup(),
                                         GetNoneFilesItemGroup(),
+                                        GetCustomFilesItemGroups(xNamespace),
                                         GetImportProjectItems(xNamespace),
                                         GetTargetItems(xNamespace)
                                     ); // END PROJECT
@@ -193,6 +196,40 @@ namespace SlnGen
             xmlNode.Save(csprojFilePath);
 
             return csprojFilePath;
+        }
+
+        private XElement[] GetBuildConfigurationPropertyGroups(XNamespace xNamespace)
+        {
+            List<XElement> nodes = new List<XElement>();
+            foreach(SupportedBuildConfiguration config in mSupportedBuildConfigurations)
+            {
+                if (config.Build)
+                {
+                    XElement buildConfigNode = this.ConstructBuildConfigurationPropertyGroup(xNamespace, config);
+                    if (buildConfigNode != null)
+                    {
+                        nodes.Add(buildConfigNode);
+                    }
+                }
+            }
+
+            return nodes.ToArray();
+        }
+
+        protected virtual XElement ConstructBuildConfigurationPropertyGroup(XNamespace xNamespace, SupportedBuildConfiguration config)
+        {
+            if (config.Platform.Equals("Any CPU") && config.Configuration.Equals("Debug"))
+            {
+                return GetDebugAnyCPUPropertyGroup();
+            }
+            else if (config.Platform.Equals("Any CPU") && config.Configuration.Equals("Release"))
+            {
+                return GetReleaseAnyCPUPropertyGroup();
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private XElement GetAssemblyReferenceItemGroup()
@@ -268,11 +305,12 @@ namespace SlnGen
             return itemGroup;
         }
 
-        private XElement GetEmbeddedFilesItemGroup()
+        private XElement GetOtherFileItemGroup()
         {
-            List<KeyValuePair<ProjectFile, string>> embeddedFiles = tempFileRelativePathDictionary.Where(x => x.Key is EmbeddedResourceProjectFile).ToList();
             XElement itemGroup = new XElement(xNamespace + "ItemGroup");
-            foreach(KeyValuePair<ProjectFile, string> embeddedFile in embeddedFiles)
+
+            List<KeyValuePair<ProjectFile, string>> embeddedFiles = tempFileRelativePathDictionary.Where(x => x.Key is EmbeddedResourceProjectFile).ToList();
+            foreach (KeyValuePair<ProjectFile, string> embeddedFile in embeddedFiles)
             {
                 EmbeddedResourceProjectFile typeCastedFile = embeddedFile.Key as EmbeddedResourceProjectFile;
 
@@ -288,6 +326,19 @@ namespace SlnGen
                     );
                 itemGroup.Add(embeddedElement);
             }
+
+            List<KeyValuePair<ProjectFile, string>> androidResourceFiles = tempFileRelativePathDictionary.Where(x => x.Key is AndroidResourceProjectFile).ToList();
+            foreach (KeyValuePair<ProjectFile, string> androidResourceFile in androidResourceFiles)
+            {
+                AndroidResourceProjectFile typeCastedFile = androidResourceFile.Key as AndroidResourceProjectFile;
+
+                XElement resourceElement =
+                    new XElement(xNamespace + "AndroidResource",
+                        new XAttribute("Include", androidResourceFile.Value)
+                    );
+                itemGroup.Add(resourceElement);
+            }
+
             return itemGroup;
         }
 
@@ -308,7 +359,8 @@ namespace SlnGen
 
         private XElement GetNoneFilesItemGroup()
         {
-            List<KeyValuePair<ProjectFile, string>> noneTypeFiles = tempFileRelativePathDictionary.Where(x => !x.Key.ShouldCompile && !x.Key.IsContent && !(x.Key is EmbeddedResourceProjectFile)).ToList();
+            List<KeyValuePair<ProjectFile, string>> noneTypeFiles = tempFileRelativePathDictionary.Where(x => !x.Key.ShouldCompile && !x.Key.IsContent 
+                && !(x.Key is EmbeddedResourceProjectFile || x.Key is AndroidResourceProjectFile)).ToList();
             XElement itemGroup = new XElement(xNamespace+"ItemGroup");
             foreach (KeyValuePair<ProjectFile, string> noneTypeFile in noneTypeFiles)
             {
@@ -321,7 +373,7 @@ namespace SlnGen
             return itemGroup;
         }
 
-        private XElement GetReleaseAnyCPUPropertyGroup()
+        private XElement GetDebugAnyCPUPropertyGroup()
         {
             return
             new XElement(xNamespace+"PropertyGroup",
@@ -351,7 +403,7 @@ namespace SlnGen
 
         }
 
-        private XElement GetDebugAnyCPUPropertyGroup()
+        private XElement GetReleaseAnyCPUPropertyGroup()
         {
             return
             new XElement(xNamespace+"PropertyGroup",
@@ -377,6 +429,19 @@ namespace SlnGen
                 );
         }
 
+        protected virtual XElement[] GetCustomFilesItemGroups(XNamespace xNamespace)
+        {
+            return new XElement[] { };
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// Probably should not call base when overriding this method. If you're overriding it there's a chance you do not want the default features.
+        /// </remarks>
+        /// <param name="xNamespace"></param>
+        /// <returns></returns>
         protected virtual XElement[] GetImportProjectItems(XNamespace xNamespace)
         {
             return new XElement[] {

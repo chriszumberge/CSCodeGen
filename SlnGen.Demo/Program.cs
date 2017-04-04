@@ -32,16 +32,18 @@ namespace SlnGen.Demo
             });
             pcl.AddFileToFolder(new EmbeddedResourceProjectFile("App.xaml", "Designer", "MSBuild:UpdateDesignTimeXaml"));
             pcl.AddFileToFolder(new EmbeddedResourceProjectFile("MainPage.xaml", "Designer", "MSBuild:UpdateDesignTimeXaml"));
-            pcl.AddNugetPackage(References.Nuget.XamarinFormsCore);
-            pcl.AddNugetPackage(References.Nuget.XamarinFormsPlatform);
-            pcl.AddNugetPackage(References.Nuget.XamarinFormsXaml);
-
-
 
             CsProj droidlib = new AndroidCsProj("TestCrossPlatformPCL.Android", "blah", "blah");
-            CsProj ioslib = new iOSCsProj("TestCrossPlatformPCL.iOS", "blah", "blah");
+            droidlib.AddProjectReference(new ProjectReference(pcl.AssemblyName,
+                $@"..\{pcl.AssemblyName}\{pcl.AssemblyName}.csproj",
+                pcl.AssemblyGuid));
 
-            Solution sln = new Solution("TestCrossPlatformPCL");
+            CsProj ioslib = new iOSCsProj("TestCrossPlatformPCL.iOS");
+            ioslib.AddProjectReference(new ProjectReference(pcl.AssemblyName,
+                $@"..\{pcl.AssemblyName}\{pcl.AssemblyName}.csproj",
+                pcl.AssemblyGuid));
+
+            Solution sln = new Solution("TestCrossPlatformPCL", Guid.Parse("FAE04EC0-301F-11D3-BF4B-00C04F79EFBC"));
             sln.AddProject(pcl);
             sln.AddProject(droidlib);
             sln.AddProject(ioslib);
@@ -60,7 +62,7 @@ namespace SlnGen.Demo
             CsProj caProj = new ConsoleApplicationCsProj("TestConsoleApplication", "v4.5.2");
             caProj.AddNugetPackage(References.Nuget.NewtonsoftJson);
             caProj.AddProjectReference(new ProjectReference(clProj.AssemblyName, $@"..\{clProj.AssemblyName}\{clProj.AssemblyName}.csproj", clProj.AssemblyGuid));
-            caProj.AddFileToFolder(new Files.AppConfigFile());
+            caProj.AddFileToFolder(new AppConfigFile());
             caProj.AddFileToFolder(new ProjectFile("help.txt", false, true));
 
             caProj.AddFileToFolder(new ProjectFile(

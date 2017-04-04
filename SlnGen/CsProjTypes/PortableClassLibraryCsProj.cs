@@ -15,6 +15,10 @@ namespace SlnGen
         {
             mAssemblyReferences.Clear();
 
+            this.AddNugetPackage(References.Nuget.XamarinFormsCore);
+            this.AddNugetPackage(References.Nuget.XamarinFormsPlatform);
+            this.AddNugetPackage(References.Nuget.XamarinFormsXaml);
+
             mSupportedBuildConfigurations.Add(new SupportedBuildConfiguration("Ad-Hoc", "Any CPU"));
             mSupportedBuildConfigurations.Add(new SupportedBuildConfiguration("Ad-Hoc", "iPhone"));
             mSupportedBuildConfigurations.Add(new SupportedBuildConfiguration("Ad-Hoc", "iPhoneSimulator"));
@@ -28,7 +32,7 @@ namespace SlnGen
             mSupportedBuildConfigurations.Add(new SupportedBuildConfiguration("Release", "iPhone"));
             mSupportedBuildConfigurations.Add(new SupportedBuildConfiguration("Release", "iPhoneSimulator"));
 
-            string TargetFrameworkProfile = "Profile529";
+            string TargetFrameworkProfile = "Profile259";
             mTargetFrameworkProfile = TargetFrameworkProfile;
         }
 
@@ -43,7 +47,7 @@ namespace SlnGen
                     new XText(mTargetFrameworkProfile)
                 ),
                 new XElement(xNamespace+"ProjectTypeGuids",
-                    new XText($"{{{solutionGuid}}}")
+                    new XText($"{{786C830F-07A1-408B-BD7F-6EE04809D6DB}};{{{solutionGuid.ToString().ToUpper()}}}")
                 ),
                 new XElement(xNamespace+"NuGetPackageImportStamp")
             };
@@ -77,7 +81,7 @@ namespace SlnGen
                             new XText("This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.")
                         )
                     ),
-                    new XElement("Error",
+                    new XElement(xNamespace+"Error",
                         new XAttribute("Condition", @"!Exists('..\..\packages\Xamarin.Forms.2.3.3.193\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')"),
                         new XAttribute("Text", @"$([System.String]::Format('$(ErrorText)', '..\..\packages\Xamarin.Forms.2.3.3.193\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets'))")
                     )

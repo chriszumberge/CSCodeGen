@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace SlnGen
 {
-    public sealed class AppConfigFile : ConfigFile
+    public sealed class iOSMainFile : ProjectFile
     {
+        public iOSMainFile() : base("Main.cs", true, false)
+        {
+
+        }
     }
 }

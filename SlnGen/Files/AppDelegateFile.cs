@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace SlnGen
 {
-    public class ConfigFile : ProjectFile
+    public sealed class AppDelegateFile : ProjectFile
     {
-        public ConfigFile(string fileName)
-            : base(fileName+ ".config", false, false, null)
+        public AppDelegateFile() : base("AppDelegate.cs", true, false)
         {
             
         }

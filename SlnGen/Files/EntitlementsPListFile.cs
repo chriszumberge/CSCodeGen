@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace SlnGen
 {
-    public class ConfigFile : ProjectFile
+    public sealed class EntitlementsPListFile : ProjectFile
     {
-        public ConfigFile(string fileName)
-            : base(fileName+ ".config", false, false, null)
+        public EntitlementsPListFile() : base("Entitlements.plist", false, false)
         {
-            
+
         }
     }
 }

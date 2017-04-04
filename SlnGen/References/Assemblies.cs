@@ -16,6 +16,8 @@ namespace SlnGen.References
         public static AssemblyReference SystemData = new AssemblyReference("System.Data");
         public static AssemblyReference SystemNetHttp = new AssemblyReference("System.Net.Http");
         public static AssemblyReference SystemXml = new AssemblyReference("System.Xml");
+        public static AssemblyReference SystemObjectModel = new AssemblyReference("System.ObjectModel");
 
+        public static AssemblyReference XamariniOS = new AssemblyReference("Xamarin.iOS");
     }
 }

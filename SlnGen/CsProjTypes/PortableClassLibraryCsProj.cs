@@ -15,9 +15,10 @@ namespace SlnGen
         {
             mAssemblyReferences.Clear();
 
-            this.AddNugetPackage(References.Nuget.XamarinFormsCore);
-            this.AddNugetPackage(References.Nuget.XamarinFormsPlatform);
-            this.AddNugetPackage(References.Nuget.XamarinFormsXaml);
+            //this.AddNugetPackage(References.Nuget.XamarinFormsCore);
+            //this.AddNugetPackage(References.Nuget.XamarinFormsPlatform);
+            //this.AddNugetPackage(References.Nuget.XamarinFormsXaml);
+            this.AddNugetPackage(References.Nuget.XamarinForms_portable45);
 
             mSupportedBuildConfigurations.Add(new SupportedBuildConfiguration("Ad-Hoc", "Any CPU"));
             mSupportedBuildConfigurations.Add(new SupportedBuildConfiguration("Ad-Hoc", "iPhone"));

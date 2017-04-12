@@ -28,7 +28,7 @@ namespace SlnGen.Demo
             pcl.AddFileToFolder(app);
             pcl.AddFileToFolder(mainPage);
 
-            CsProj droidlib = new AndroidCsProj("TestCrossPlatformPCL.Android", "blah", "blah");
+            CsProj droidlib = new AndroidCsProj("TestCrossPlatformPCL", "TestCrossPlatformPCL.Android", "blah", "blah");
             droidlib.AddProjectReference(new ProjectReference(pcl.AssemblyName,
                 $@"..\{pcl.AssemblyName}\{pcl.AssemblyName}.csproj",
                 pcl.AssemblyGuid));
@@ -50,12 +50,12 @@ namespace SlnGen.Demo
         {
             CsProj clProj = new ClassLibraryCsProj("TestClassLibrary", "v4.5.2");
 
-            clProj.AddNugetPackage(References.Nuget.NewtonsoftJson);
+            clProj.AddNugetPackage(References.Nuget.NewtonsoftJson_net452);
             clProj.AddFileToFolder(new ProjectFile("Class1.cs", true, false, CreateEmptyClassFile("TestClassLibrary", "Class1").ToString()));
             clProj.AddFileToFolder(new ProjectFile("Test.txt", false, true, String.Empty));
 
             CsProj caProj = new ConsoleApplicationCsProj("TestConsoleApplication", "v4.5.2");
-            caProj.AddNugetPackage(References.Nuget.NewtonsoftJson);
+            caProj.AddNugetPackage(References.Nuget.NewtonsoftJson_net452);
             caProj.AddProjectReference(new ProjectReference(clProj.AssemblyName, $@"..\{clProj.AssemblyName}\{clProj.AssemblyName}.csproj", clProj.AssemblyGuid));
             caProj.AddFileToFolder(new AppConfigFile());
             caProj.AddFileToFolder(new ProjectFile("help.txt", false, true));

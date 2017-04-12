@@ -66,6 +66,7 @@
     <Compile Include="Files\XamlProjectFile.cs" />
     <Compile Include="FileTemplate.cs" />
     <Compile Include="IFileContainer.cs" />
+    <Compile Include="NugetAssembly.cs" />
     <Compile Include="NugetPackage.cs" />
     <Compile Include="ProjectFile.cs" />
     <Compile Include="ProjectFolder.cs" />

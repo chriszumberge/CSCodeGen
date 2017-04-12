@@ -14,6 +14,9 @@ namespace CSCodeGen
         bool mIsStatic { get; set; } = false;
         public bool IsStatic => mIsStatic;
 
+        bool mIsOverride { get; set; } = false;
+        public bool IsOverride => mIsOverride;
+
         //Type mReturnType { get; set; } = typeof(void);
         //public Type ReturnType => mReturnType;
         string mReturnType { get; set; } = "void";
@@ -32,10 +35,11 @@ namespace CSCodeGen
         List<string> mGenericTypeNames { get; set; } = new List<string>();
         public List<string> GenericTypeNames => mGenericTypeNames;
 
-        public CGMethodSignature(string methodName, string returnType = "void", bool isStatic = false, IEnumerable<string> genericTypeNames = null)
+        public CGMethodSignature(string methodName, string returnType = "void", bool isStatic = false, bool isOverride = false, IEnumerable<string> genericTypeNames = null)
         {
             mAccessibilityLevel = AccessibilityLevel.Public;
             mIsStatic = isStatic;
+            mIsOverride = isOverride;
             mMethodName = methodName;
             mReturnType = returnType;
             if (genericTypeNames != null)
@@ -45,10 +49,11 @@ namespace CSCodeGen
             }
         }
 
-        public CGMethodSignature(AccessibilityLevel accessibilityLevel, string methodName, string returnType = "void", bool isStatic = false, IEnumerable<string> genericTypeNames = null)
+        public CGMethodSignature(AccessibilityLevel accessibilityLevel, string methodName, string returnType = "void", bool isStatic = false, bool isOverride = false, IEnumerable<string> genericTypeNames = null)
         {
             mAccessibilityLevel = accessibilityLevel;
             mIsStatic = isStatic;
+            mIsOverride = isOverride;
             mMethodName = methodName;
             mReturnType = returnType;
             if (genericTypeNames != null)
@@ -93,6 +98,7 @@ namespace CSCodeGen
             StringBuilder sb = new StringBuilder();
             sb.Append($"{AccessibilityLevel} ");
             if (IsStatic) { sb.Append("static "); }
+            if (IsOverride) { sb.Append("override "); }
             sb.Append($"{ReturnType} ");
             sb.Append($"{MethodName}");
 

@@ -78,7 +78,7 @@ namespace SlnGen
                     new AssemblyInfoFile(mAssemblyName, mAssemblyGuid, new Version(1, 0, 0, 0), new Version(1, 0, 0, 0))
                 }
             });
-            mFiles.Add(new ProjectFile("packages.config", false, false));
+            //mFiles.Add(new ProjectFile("packages.config", false, false));
         }
 
         public void AddAssemblyReference(AssemblyReference assemblyReference) => mAssemblyReferences.Add(assemblyReference);
@@ -135,6 +135,33 @@ namespace SlnGen
             DirectoryInfo csprojDirectory = Directory.CreateDirectory(csprojDirectoryPath);
 
             tempCsProjDirectoryPath = csprojDirectoryPath;
+
+            // Do packages.config with all the added nuget packages
+            var packageRoot = new XElement("packages");
+            ProjectFile packagesConfig = new ProjectFile("packages.config", false, false);
+            foreach (NugetPackage package in mNugetPackages)
+            {
+                XElement packageElement =
+                        new XElement("package",
+                            new XAttribute("id", package.Id),
+                            new XAttribute("version", package.Version),
+                            new XAttribute("targetFramework", package.TargetFramework)
+                        );
+                packageRoot.Add(packageElement);
+            }
+            using (var memoryStream = new MemoryStream())
+            {
+                packageRoot.Save(memoryStream);
+
+                memoryStream.Position = 0;
+                using (var streamReader = new StreamReader(memoryStream))
+                {
+                    string contents = streamReader.ReadToEnd();
+                    packagesConfig.FileContents = contents;
+                }
+            }
+            mFiles.Add(packagesConfig);
+
             AddProjectFilesAndFolders(this, csprojDirectoryPath);
 
             // create csproj file using xmlwriter
@@ -243,17 +270,20 @@ namespace SlnGen
             XElement itemGroup = new XElement(xNamespace+"ItemGroup");
             foreach (NugetPackage package in NugetPackages)
             {
-                XElement packageElement =
-                    new XElement(xNamespace+"Reference",
-                        new XAttribute("Include", package.Include),
-                        new XElement(xNamespace+"HintPath",
-                            new XText(package.HintPath)
-                        ),
-                        new XElement(xNamespace+"Private",
-                            new XText(package.IsPrivate)
-                        )
-                    );
-                itemGroup.Add(packageElement);
+                foreach (NugetAssembly assembly in package.Assemblies)
+                {
+                    XElement packageElement =
+                        new XElement(xNamespace + "Reference",
+                            new XAttribute("Include", assembly.Include),
+                            new XElement(xNamespace + "HintPath",
+                                new XText(assembly.HintPath)
+                            ),
+                            new XElement(xNamespace + "Private",
+                                new XText(assembly.IsPrivate)
+                            )
+                        );
+                    itemGroup.Add(packageElement);
+                }
             }
             foreach (AssemblyReference assembly in AssemblyReferences)
             {

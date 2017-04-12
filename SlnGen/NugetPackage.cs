@@ -6,18 +6,24 @@ using System.Threading.Tasks;
 
 namespace SlnGen
 {
-    public class NugetPackage : AssemblyReference
+    public sealed class NugetPackage
     {
-        readonly string mInclude;
-        public string Include => mInclude;
+        readonly string mId;
+        public string Id => mId;
 
-        public NugetPackage(string name) : base(name)
-        {
-        }
+        readonly string mVersion;
+        public string Version => mVersion;
 
-        public NugetPackage(string name, string include, string hintPath, bool isPrivate) : base(name, hintPath, isPrivate)
+        readonly string mTargetFramework;
+        public string TargetFramework => mTargetFramework;
+
+        public List<NugetAssembly> Assemblies { get; set; } = new List<NugetAssembly>();
+
+        public NugetPackage(string id, string version, string targetFramework)
         {
-            mInclude = include;
+            mId = id;
+            mVersion = version;
+            mTargetFramework = targetFramework;
         }
     }
 }

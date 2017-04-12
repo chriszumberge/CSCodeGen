@@ -31,10 +31,11 @@ namespace SlnGen
             mAssemblyReferences.Add(References.Assemblies.SystemXml);
             mAssemblyReferences.Add(References.Assemblies.SystemCore);
             mAssemblyReferences.Add(References.Assemblies.XamariniOS);
-            this.AddNugetPackage(References.Nuget.XamarinFormsCore);
-            this.AddNugetPackage(References.Nuget.XamarinFormsPlatform);
-            this.AddNugetPackage(References.Nuget.XamarinFormsXaml);
-            this.AddNugetPackage(References.Nuget.XamarinFormsPlatformiOS);
+            //this.AddNugetPackage(References.Nuget.XamarinFormsCore);
+            //this.AddNugetPackage(References.Nuget.XamarinFormsPlatform);
+            //this.AddNugetPackage(References.Nuget.XamarinFormsXaml);
+            //this.AddNugetPackage(References.Nuget.XamarinFormsPlatformiOS);
+            this.AddNugetPackage(References.Nuget.XamarinForms_xamarinios10);
         }
 
         protected override void AddFilesAndFoldersToProject()

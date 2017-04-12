@@ -9,8 +9,11 @@ namespace SlnGen
 {
     public sealed class AndroidCsProj : CsProj
     {
-        public AndroidCsProj(string assemblyName, string outputType, string targetFrameworkVersion) : base(assemblyName, "Library", "v6.0")
+        public readonly string AppName;
+        public AndroidCsProj(string appName, string assemblyName, string outputType, string targetFrameworkVersion) : base(assemblyName, "Library", "v6.0")
         {
+            AppName = appName;
+
             mSupportedBuildConfigurations.Add(new SupportedBuildConfiguration("Ad-Hoc", "Any CPU", true, true));
             mSupportedBuildConfigurations.Add(new SupportedBuildConfiguration("Ad-Hoc", "iPhone", true, true));
             mSupportedBuildConfigurations.Add(new SupportedBuildConfiguration("Ad-Hoc", "iPhoneSimulator", true, true));
@@ -31,16 +34,17 @@ namespace SlnGen
             this.AddAssemblyReference(References.Assemblies.SystemXmlLinq);
             this.AddAssemblyReference(References.Assemblies.SystemXml);
 
-            this.AddNugetPackage(References.Nuget.FormsViewGroup);
-            this.AddNugetPackage(References.Nuget.XamarinAndroidSupportDesign);
-            this.AddNugetPackage(References.Nuget.XamarinAndroidSupportv4);
-            this.AddNugetPackage(References.Nuget.XamarinAndroidSupportv7AppCompat);
-            this.AddNugetPackage(References.Nuget.XamarinAndroidSupportv7CardView);
-            this.AddNugetPackage(References.Nuget.XamarinAndroidSupportv7MediaRouter);
-            this.AddNugetPackage(References.Nuget.XamarinFormsCore);
-            this.AddNugetPackage(References.Nuget.XamarinFormsPlatform);
-            this.AddNugetPackage(References.Nuget.XamarinFormsPlatformAndroid);
-            this.AddNugetPackage(References.Nuget.XamarinFormsXaml);
+            this.AddNugetPackage(References.Nuget.XamarinForms_monoandroid60);
+            //this.AddNugetPackage(References.Nuget.FormsViewGroup);
+            //this.AddNugetPackage(References.Nuget.XamarinAndroidSupportDesign);
+            //this.AddNugetPackage(References.Nuget.XamarinAndroidSupportv4);
+            //this.AddNugetPackage(References.Nuget.XamarinAndroidSupportv7AppCompat);
+            //this.AddNugetPackage(References.Nuget.XamarinAndroidSupportv7CardView);
+            //this.AddNugetPackage(References.Nuget.XamarinAndroidSupportv7MediaRouter);
+            //this.AddNugetPackage(References.Nuget.XamarinFormsCore);
+            //this.AddNugetPackage(References.Nuget.XamarinFormsPlatform);
+            //this.AddNugetPackage(References.Nuget.XamarinFormsPlatformAndroid);
+            //this.AddNugetPackage(References.Nuget.XamarinFormsXaml);
         }
 
         protected override void AddFilesAndFoldersToProject()
@@ -60,9 +64,27 @@ namespace SlnGen
                             new AndroidResourceProjectFile("icon.png")
                         }
                     },
-                    new ProjectFolder("drawable-hdpi"),
-                    new ProjectFolder("drawable-xhdpi"),
-                    new ProjectFolder("drawable-xxhdpi"),
+                    new ProjectFolder("drawable-hdpi")
+                    {
+                        Files =
+                        {
+                            new AndroidResourceProjectFile("icon.png")
+                        }
+                    },
+                    new ProjectFolder("drawable-xhdpi")
+                    {
+                        Files =
+                        {
+                            new AndroidResourceProjectFile("icon.png")
+                        }
+                    },
+                    new ProjectFolder("drawable-xxhdpi")
+                    {
+                        Files =
+                        {
+                            new AndroidResourceProjectFile("icon.png")
+                        }
+                    },
                     new ProjectFolder("layout")
                     {
                         Files =
@@ -86,7 +108,7 @@ namespace SlnGen
                     new ProjectFile(DefaultAndroidResourceDesignerCreator.GetFile(AssemblyName))
                 }
             });
-            this.AddFileToFolder(new MainActivityFile());
+            this.AddFileToFolder(new MainActivityFile(AppName, AssemblyName));
         }
 
         protected override XElement[] GetProjectSpecificPropertyNodes(XNamespace xNamespace, Guid solutionGuid)

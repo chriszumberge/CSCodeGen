@@ -56,6 +56,8 @@ namespace CSCodeGen
         //public List<CGEnum> InternalEnums => mInternalEnums;
         public List<CGEnum> InternalEnums { get; set; } = new List<CGEnum>();
 
+        public List<string> ClassAttributes { get; set; } = new List<string>();
+
         public CGClass(string className, bool isStatic = false, bool isAbstract = false, bool isPartial = false)
         {
             mAccessibilityLevel = AccessibilityLevel.Public;
@@ -137,6 +139,10 @@ namespace CSCodeGen
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
+            foreach(string classAttribute in ClassAttributes)
+            {
+                sb.AppendLine(classAttribute);
+            }
             sb.Append($"{AccessibilityLevel.ToString()} ");
             if (mIsStatic) { sb.Append("static "); }
             if (mIsAbstract) { sb.Append("abstract "); }

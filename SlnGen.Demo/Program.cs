@@ -21,19 +21,14 @@ namespace SlnGen.Demo
 
         private static string TestXamarinSolution()
         {
-            CsProj pcl = new PortableClassLibraryCsProj("TestCrossPlatformPCL");
+            CsProj pcl = new CrossPlatformPortableClassLibraryCsProj("TestCrossPlatformPCL");
 
-            XamlProjectFile app = new XamlProjectFile("App");
-            XamlProjectFile mainPage = new XamlProjectFile("MainPage");
-            pcl.AddFileToFolder(app);
-            pcl.AddFileToFolder(mainPage);
-
-            CsProj droidlib = new AndroidCsProj("TestCrossPlatformPCL", "TestCrossPlatformPCL.Android", "blah", "blah");
+            CsProj droidlib = new AndroidCsProj("TestCrossPlatformPCL", "TestCrossPlatformPCL.Android");
             droidlib.AddProjectReference(new ProjectReference(pcl.AssemblyName,
                 $@"..\{pcl.AssemblyName}\{pcl.AssemblyName}.csproj",
                 pcl.AssemblyGuid));
 
-            CsProj ioslib = new iOSCsProj("TestCrossPlatformPCL.iOS");
+            CsProj ioslib = new iOSCsProj("TestCrossPlatformPCL", "TestCrossPlatformPCL.iOS");
             ioslib.AddProjectReference(new ProjectReference(pcl.AssemblyName,
                 $@"..\{pcl.AssemblyName}\{pcl.AssemblyName}.csproj",
                 pcl.AssemblyGuid));

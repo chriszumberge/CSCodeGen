@@ -31,6 +31,8 @@ namespace CSCodeGen
         //public string MethodText => mMethodTextBuilder.ToString();
         public string MethodText { get; set; } = String.Empty;
 
+        public List<string> MethodComments { get; set; } = new List<string>();
+
         //public CGMethod(string methodName, Type returnType = null, bool isStatic = false)
         //{
         //    MethodSignature = new CGMethodSignature(methodName, returnType, isStatic);
@@ -99,6 +101,10 @@ namespace CSCodeGen
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
+            foreach (string methodComment in MethodComments)
+            {
+                sb.AppendLine($"// {methodComment}");
+            }
             sb.AppendLine(MethodSignature.ToString());
             sb.AppendLine("{");
 

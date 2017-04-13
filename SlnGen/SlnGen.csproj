@@ -50,7 +50,7 @@
     <Compile Include="CsProjTypes\ConsoleApplicationCsProj.cs" />
     <Compile Include="CsProj.cs" />
     <Compile Include="CsProjTypes\iOSCsProj.cs" />
-    <Compile Include="CsProjTypes\PortableClassLibraryCsProj.cs" />
+    <Compile Include="CsProjTypes\CrossPlatformPortableClassLibraryCsProj.cs" />
     <Compile Include="EmbeddedResourceProjectFile.cs" />
     <Compile Include="Files\AndroidManifestFile.cs" />
     <Compile Include="Files\AppConfigFile.cs" />
@@ -58,6 +58,8 @@
     <Compile Include="Files\AssemblyInfoFile.cs" />
     <Compile Include="Files\ConfigFile.cs" />
     <Compile Include="Files\DefaultAndroidResourceDesignerCreator.cs" />
+    <Compile Include="Files\DefaultAppXamlFile.cs" />
+    <Compile Include="Files\DefaultMainPageXamlFile.cs" />
     <Compile Include="Files\EntitlementsPListFile.cs" />
     <Compile Include="Files\InfoPListFile.cs" />
     <Compile Include="Files\iOSMainFile.cs" />

@@ -75,28 +75,85 @@ namespace SlnGen.References
             }
         };
 
-        public static readonly NugetAssembly XamarinAndroidSupportDesign = new NugetAssembly("Xamarin.Android.Support.Design",
-            "Xamarin.Android.Support.Design, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL",
-            @"..\..\packages\Xamarin.Android.Support.Design.23.0.1.3\lib\MonoAndroid403\Xamarin.Android.Support.Design.dll", true);
+        public static readonly NugetPackage XamarinAndroidSupportAnimatedVectorDrawable_monoandroid60 = new NugetPackage("Xamarin.Android.Support.Animated.Vector.Drawable",
+            "23.3.0", "monoandroid60")
+        {
+            Assemblies =
+            {
+                new NugetAssembly("Xamarin.Android.Support.Animated.Vector.Drawable",
+                    "Xamarin.Android.Support.Animated.Vector.Drawable, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL",
+                    @"..\..\packages\Xamarin.Android.Support.Animated.Vector.Drawable.23.3.0\lib\MonoAndroid403\Xamarin.Android.Support.Animated.Vector.Drawable.dll", true)
+            }
+        };
 
-        public static readonly NugetAssembly XamarinAndroidSupportv4 = new NugetAssembly("Xamarin.Android.Support.v4",
-            "Xamarin.Android.Support.v4, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL",
-            @"..\..\packages\Xamarin.Android.Support.v4.23.0.1.3\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll", true);
+        public static readonly NugetPackage XamarinAndroidSupportDesign_monoandroid60 = new NugetPackage("Xamarin.Android.Support.Design", "23.3.0", "monoandroid60")
+        {
+            Assemblies =
+            {
+                new NugetAssembly("Xamarin.Android.Support.Design",
+                    "Xamarin.Android.Support.Design, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL",
+                    @"..\..\packages\Xamarin.Android.Support.Design.23.0.1.3\lib\MonoAndroid403\Xamarin.Android.Support.Design.dll", true)
+            }
+        };
 
-        public static readonly NugetAssembly XamarinAndroidSupportv7AppCompat = new NugetAssembly("Xamarin.Android.Support.v7.AppCompat",
-            "Xamarin.Android.Support.v7.AppCompat, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL",
-            @"..\..\packages\Xamarin.Android.Support.v7.AppCompat.23.0.1.3\lib\MonoAndroid403\Xamarin.Android.Support.v7.AppCompat.dll", true);
+        public static readonly NugetPackage XamarinAndroidSupportv4_monoandroid60 = new NugetPackage("Xamarin.Android.Support.v4", "23.3.0", "monoandroid60")
+        {
+            Assemblies =
+            {
+                new NugetAssembly("Xamarin.Android.Support.v4",
+                    "Xamarin.Android.Support.v4, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL",
+                    @"..\..\packages\Xamarin.Android.Support.v4.23.0.1.3\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll", true)
+            }
+        };
 
-        public static readonly NugetAssembly XamarinAndroidSupportv7CardView = new NugetAssembly("Xamarin.Android.Support.v7.CardView",
-            "Xamarin.Android.Support.v7.CardView, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL",
-            @"..\..\packages\Xamarin.Android.Support.v7.CardView.23.0.1.3\lib\MonoAndroid403\Xamarin.Android.Support.v7.CardView.dll", true);
+        public static readonly NugetPackage XamarinAndroidSupportv7AppCompat_monoandroid60 = new NugetPackage("Xamarin.Android.Support.v7.AppCompat", "23.3.0", "monoandroid60")
+        {
+            Assemblies =
+            {
+                new NugetAssembly("Xamarin.Android.Support.v7.AppCompat",
+                    "Xamarin.Android.Support.v7.AppCompat, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL",
+                    @"..\..\packages\Xamarin.Android.Support.v7.AppCompat.23.0.1.3\lib\MonoAndroid403\Xamarin.Android.Support.v7.AppCompat.dll", true)
+            }
+        };
 
-        public static readonly NugetAssembly XamarinAndroidSupportv7MediaRouter = new NugetAssembly("Xamarin.Android.Support.v7.MediaRouter",
-            "Xamarin.Android.Support.v7.MediaRouter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL",
-            @"..\..\packages\Xamarin.Android.Support.v7.MediaRouter.23.0.1.3\lib\MonoAndroid403\Xamarin.Android.Support.v7.MediaRouter.dll", true);
+        public static readonly NugetPackage XamarinAndroidSupportv7CardView_monoandroid60 = new NugetPackage("Xamarin.Android.Support.v7.CardView", "23.3.0", "monoandroid60")
+        {
+            Assemblies =
+            {
+                new NugetAssembly("Xamarin.Android.Support.v7.CardView",
+                    "Xamarin.Android.Support.v7.CardView, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL",
+                    @"..\..\packages\Xamarin.Android.Support.v7.CardView.23.0.1.3\lib\MonoAndroid403\Xamarin.Android.Support.v7.CardView.dll", true)
+            }
+        };
 
-        public static readonly NugetAssembly XamarinFormsPlatformAndroid = new NugetAssembly("Xamarin.Forms.Platform.Android",
-            "Xamarin.Forms.Platform.Android, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL",
-            @"..\..\packages\Xamarin.Forms.2.2.0.45\lib\MonoAndroid10\Xamarin.Forms.Platform.Android.dll", true);
+        public static readonly NugetPackage XamarinAndroidSupportv7MediaRouter_monoandroid60 = new NugetPackage("Xamarin.Android.Support.v7.MediaRouter", "23.3.0", "monoandroid60")
+        {
+            Assemblies =
+            {
+                new NugetAssembly("Xamarin.Android.Support.v7.MediaRouter",
+                    "Xamarin.Android.Support.v7.MediaRouter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL",
+                    @"..\..\packages\Xamarin.Android.Support.v7.MediaRouter.23.0.1.3\lib\MonoAndroid403\Xamarin.Android.Support.v7.MediaRouter.dll", true)
+            }
+        };
+
+        public static readonly NugetPackage XamarinAndroidSupportv7RecyclerView_monoandroid60 = new NugetPackage("Xamarin.Android.Support.v7.RecyclerView", "23.3.0", "monoandroid60")
+        {
+            Assemblies =
+            {
+                new NugetAssembly("Xamarin.Android.Support.v7.RecyclerView",
+                    "Xamarin.Android.Support.v7.RecyclerView, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL",
+                    @"..\..\packages\Xamarin.Android.Support.v7.RecyclerView.23.3.0\lib\MonoAndroid403\Xamarin.Android.Support.v7.RecyclerView.dll", true)
+            }
+        };
+
+        public static readonly NugetPackage XamarinAndroidSupportVectorDrawable_monoandroid60 = new NugetPackage("Xamarin.Android.Support.Vector.Drawable", "23.3.0", "monoandroid60")
+        {
+            Assemblies =
+            {
+                new NugetAssembly("Xamarin.Android.Support.Vector.Drawable",
+                    "Xamarin.Android.Support.Vector.Drawable, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL",
+                    @"..\..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\lib\MonoAndroid403\Xamarin.Android.Support.Vector.Drawable.dll", true)
+            }
+        };
     }
 }

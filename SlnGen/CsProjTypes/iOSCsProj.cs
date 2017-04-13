@@ -9,8 +9,13 @@ namespace SlnGen
 {
     public sealed class iOSCsProj : CsProj
     {
-        public iOSCsProj(string assemblyName) : base(assemblyName, "Exe", String.Empty)
+        public iOSCsProj(string appName, string assemblyName, string bundleIdentifier = null) : base(assemblyName, "Exe", String.Empty)
         {
+            if (String.IsNullOrEmpty(bundleIdentifier))
+            {
+                bundleIdentifier = $"com.yourcompany.{appName}";
+            }
+
             mDefaultBuildPlatform = "iPhoneSimulator";
 
             mSupportedBuildConfigurations.Add(new SupportedBuildConfiguration("Ad-Hoc", "Any CPU", false));
@@ -31,11 +36,10 @@ namespace SlnGen
             mAssemblyReferences.Add(References.Assemblies.SystemXml);
             mAssemblyReferences.Add(References.Assemblies.SystemCore);
             mAssemblyReferences.Add(References.Assemblies.XamariniOS);
-            //this.AddNugetPackage(References.Nuget.XamarinFormsCore);
-            //this.AddNugetPackage(References.Nuget.XamarinFormsPlatform);
-            //this.AddNugetPackage(References.Nuget.XamarinFormsXaml);
-            //this.AddNugetPackage(References.Nuget.XamarinFormsPlatformiOS);
+
             this.AddNugetPackage(References.Nuget.XamarinForms_xamarinios10);
+
+            this.AddFileToFolder(new InfoPListFile(appName, bundleIdentifier));
         }
 
         protected override void AddFilesAndFoldersToProject()
@@ -43,10 +47,10 @@ namespace SlnGen
             base.AddFilesAndFoldersToProject();
 
             mFolders.Add(new ProjectFolder("Resources"));
-            this.AddFileToFolder(new AppDelegateFile());
-            this.AddFileToFolder(new iOSMainFile());
+
+            this.AddFileToFolder(new AppDelegateFile(AssemblyName));
+            this.AddFileToFolder(new iOSMainFile(AssemblyName));
             this.AddFileToFolder(new EntitlementsPListFile());
-            this.AddFileToFolder(new InfoPListFile());
         }
 
         protected override XElement[] GetProjectSpecificPropertyNodes(XNamespace xNamespace, Guid solutionGuid)

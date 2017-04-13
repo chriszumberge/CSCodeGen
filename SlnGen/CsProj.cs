@@ -78,7 +78,6 @@ namespace SlnGen
                     new AssemblyInfoFile(mAssemblyName, mAssemblyGuid, new Version(1, 0, 0, 0), new Version(1, 0, 0, 0))
                 }
             });
-            //mFiles.Add(new ProjectFile("packages.config", false, false));
         }
 
         public void AddAssemblyReference(AssemblyReference assemblyReference) => mAssemblyReferences.Add(assemblyReference);

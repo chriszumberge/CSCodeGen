@@ -58,6 +58,8 @@ namespace CSCodeGen
 
         public List<string> ClassAttributes { get; set; } = new List<string>();
 
+        public List<string> ClassComments { get; set; } = new List<string>();
+
         public CGClass(string className, bool isStatic = false, bool isAbstract = false, bool isPartial = false)
         {
             mAccessibilityLevel = AccessibilityLevel.Public;
@@ -139,6 +141,10 @@ namespace CSCodeGen
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
+            foreach(string classComment in ClassComments)
+            {
+                sb.AppendLine($"// {classComment}");
+            }
             foreach(string classAttribute in ClassAttributes)
             {
                 sb.AppendLine(classAttribute);

@@ -29,7 +29,8 @@ namespace CSCodeGen
 
         //StringBuilder mConstructorTextBuilder { get; set; } = new StringBuilder();
         //public string ConstructorText => mConstructorTextBuilder.ToString();
-        public string ConstructorText { get; set; } = String.Empty;
+        //public string ConstructorText { get; set; } = String.Empty;
+        public List<string> ConstructorText { get; set; } = new List<string>();
 
         public List<string> BaseClassArguments { get; set; } = new List<string>();
 
@@ -92,10 +93,14 @@ namespace CSCodeGen
             sb.AppendLine();
             sb.AppendLine("{");
 
-            string[] ctorTextLines = ConstructorText.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-            foreach (string ctorTextLine in ctorTextLines)
+            //string[] ctorTextLines = ConstructorText.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            //foreach (string ctorTextLine in ctorTextLines)
+            //{
+            //    sb.AppendLine($"\t{ctorTextLine}");
+            //}
+            foreach (string ctorLine in ConstructorText)
             {
-                sb.AppendLine($"\t{ctorTextLine}");
+                sb.AppendLine($"\t{ctorLine}");
             }
 
             sb.AppendLine("}");

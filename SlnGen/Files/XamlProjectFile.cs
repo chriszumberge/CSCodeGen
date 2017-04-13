@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SlnGen
 {
-    public sealed class XamlProjectFile
+    public class XamlProjectFile
     {
         EmbeddedResourceProjectFile mXamlFile { get; set; }
         /// <summary>

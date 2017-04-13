@@ -7,17 +7,14 @@ using System.Xml.Linq;
 
 namespace SlnGen
 {
-    public sealed class PortableClassLibraryCsProj : CsProj
+    public sealed class CrossPlatformPortableClassLibraryCsProj : CsProj
     {
         readonly string mTargetFrameworkProfile;
 
-        public PortableClassLibraryCsProj(string assemblyName) : base(assemblyName, "Library", "v4.5")
+        public CrossPlatformPortableClassLibraryCsProj(string assemblyName) : base(assemblyName, "Library", "v4.5")
         {
             mAssemblyReferences.Clear();
 
-            //this.AddNugetPackage(References.Nuget.XamarinFormsCore);
-            //this.AddNugetPackage(References.Nuget.XamarinFormsPlatform);
-            //this.AddNugetPackage(References.Nuget.XamarinFormsXaml);
             this.AddNugetPackage(References.Nuget.XamarinForms_portable45);
 
             mSupportedBuildConfigurations.Add(new SupportedBuildConfiguration("Ad-Hoc", "Any CPU"));
@@ -35,6 +32,9 @@ namespace SlnGen
 
             string TargetFrameworkProfile = "Profile259";
             mTargetFrameworkProfile = TargetFrameworkProfile;
+
+            this.AddFileToFolder(new DefaultAppXamlFile(AssemblyName));
+            this.AddFileToFolder(new DefaultMainPageXamlFile(AssemblyName));
         }
 
         protected override XElement[] GetProjectSpecificPropertyNodes(XNamespace xNamespace, Guid solutionGuid)

@@ -10,7 +10,7 @@ namespace SlnGen
     public sealed class AndroidCsProj : CsProj
     {
         public readonly string AppName;
-        public AndroidCsProj(string appName, string assemblyName, string outputType, string targetFrameworkVersion) : base(assemblyName, "Library", "v6.0")
+        public AndroidCsProj(string appName, string assemblyName) : base(assemblyName, "Library", "v6.0")
         {
             AppName = appName;
 
@@ -35,16 +35,16 @@ namespace SlnGen
             this.AddAssemblyReference(References.Assemblies.SystemXml);
 
             this.AddNugetPackage(References.Nuget.XamarinForms_monoandroid60);
-            //this.AddNugetPackage(References.Nuget.FormsViewGroup);
-            //this.AddNugetPackage(References.Nuget.XamarinAndroidSupportDesign);
-            //this.AddNugetPackage(References.Nuget.XamarinAndroidSupportv4);
-            //this.AddNugetPackage(References.Nuget.XamarinAndroidSupportv7AppCompat);
-            //this.AddNugetPackage(References.Nuget.XamarinAndroidSupportv7CardView);
-            //this.AddNugetPackage(References.Nuget.XamarinAndroidSupportv7MediaRouter);
-            //this.AddNugetPackage(References.Nuget.XamarinFormsCore);
-            //this.AddNugetPackage(References.Nuget.XamarinFormsPlatform);
-            //this.AddNugetPackage(References.Nuget.XamarinFormsPlatformAndroid);
-            //this.AddNugetPackage(References.Nuget.XamarinFormsXaml);
+            this.AddNugetPackage(References.Nuget.XamarinAndroidSupportAnimatedVectorDrawable_monoandroid60);
+            this.AddNugetPackage(References.Nuget.XamarinAndroidSupportDesign_monoandroid60);
+            this.AddNugetPackage(References.Nuget.XamarinAndroidSupportv4_monoandroid60);
+            this.AddNugetPackage(References.Nuget.XamarinAndroidSupportv7AppCompat_monoandroid60);
+            this.AddNugetPackage(References.Nuget.XamarinAndroidSupportv7CardView_monoandroid60);
+            this.AddNugetPackage(References.Nuget.XamarinAndroidSupportv7MediaRouter_monoandroid60);
+            this.AddNugetPackage(References.Nuget.XamarinAndroidSupportv7RecyclerView_monoandroid60);
+            this.AddNugetPackage(References.Nuget.XamarinAndroidSupportVectorDrawable_monoandroid60);
+
+            this.AddFileToFolder(new MainActivityFile(AppName, AssemblyName));
         }
 
         protected override void AddFilesAndFoldersToProject()
@@ -108,7 +108,6 @@ namespace SlnGen
                     new ProjectFile(DefaultAndroidResourceDesignerCreator.GetFile(AssemblyName))
                 }
             });
-            this.AddFileToFolder(new MainActivityFile(AppName, AssemblyName));
         }
 
         protected override XElement[] GetProjectSpecificPropertyNodes(XNamespace xNamespace, Guid solutionGuid)

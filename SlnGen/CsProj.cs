@@ -222,7 +222,9 @@ namespace SlnGen
                                         GetNoneFilesItemGroup(),
                                         GetCustomFilesItemGroups(xNamespace),
                                         GetImportProjectItems(xNamespace),
-                                        GetTargetItems(xNamespace)
+                                        GetTargetItems(xNamespace),
+                                        GetPreBuildEventPropertyGroups(xNamespace),
+                                        GetPostBuildEventPropertyGroups(xNamespace)
                                     ); // END PROJECT
             string csprojFilePath = Path.Combine(csprojDirectoryPath, String.Concat(AssemblyName, ".csproj"));
             xmlNode.Save(csprojFilePath);
@@ -462,6 +464,22 @@ namespace SlnGen
                     new XText("4")
                     )
                 );
+        }
+
+        protected virtual XElement[] GetPreBuildEventPropertyGroups(XNamespace xNamespace)
+        {
+            //<PropertyGroup>
+            //    <PreBuildEvent>$(SolutionDir)\BuildUtilities\IncrementBuildiOS.exe "$(ProjectDir)\Info.plist"</PreBuildEvent>
+            //</PropertyGroup>
+            return new XElement[] { };
+        }
+
+        protected virtual XElement[] GetPostBuildEventPropertyGroups(XNamespace xNamespace)
+        {
+            //<PropertyGroup>
+            //    <PostBuildEvent>$(SolutionDir)\BuildUtilities\IncrementBuildiOS.exe "$(ProjectDir)\Info.plist"</PostBuildEvent>
+            //</PropertyGroup>
+            return new XElement[] { };
         }
 
         protected virtual XElement[] GetCustomFilesItemGroups(XNamespace xNamespace)
